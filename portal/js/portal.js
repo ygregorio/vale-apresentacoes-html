@@ -1,4 +1,5 @@
 import { authApi, publicApi } from "../../backoffice/js/api.js";
+import { appUrl, backofficePath } from "../../backoffice/js/paths.js";
 
 const grid = document.getElementById("presentations-grid");
 const countEl = document.getElementById("pres-count");
@@ -25,7 +26,7 @@ function renderCard(item) {
   const statusClass = item.status === "published" ? "portal-card__tag--published" : "portal-card__tag--draft";
   const statusLabel = item.status === "published" ? "Publicada" : "Rascunho";
   return `
-    <a class="portal-card" href="${esc(item.url)}">
+    <a class="portal-card" href="${esc(appUrl(item.url))}">
       <h3>${esc(item.titulo)}</h3>
       <p>${esc(item.diretoria || "Apresentação HTML interativa")}</p>
       <div class="portal-card__meta">
@@ -55,7 +56,7 @@ async function init() {
     const user = await authApi.me();
     if (user) {
       backofficeLink.textContent = `Backoffice (${user.nome})`;
-      backofficeLink.href = "/backoffice/index.html";
+      backofficeLink.href = backofficePath("index.html");
     }
   } catch {
     /* visitante anônimo */

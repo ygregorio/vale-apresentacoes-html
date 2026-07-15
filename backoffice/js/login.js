@@ -1,4 +1,5 @@
 import { authApi } from "./api.js";
+import { backofficePath, isGitHubPages, portalPath } from "./paths.js";
 
 const form = document.getElementById("login-form");
 const errorEl = document.getElementById("login-error");
@@ -16,18 +17,18 @@ function showInfo(msg) {
   infoEl.hidden = !msg;
 }
 
-function isGitHubPages() {
-  return /github\.io$/i.test(window.location.hostname);
+function isGitHubPagesHost() {
+  return isGitHubPages();
 }
 
 async function checkEnvironment() {
-  if (isGitHubPages()) {
-    showError(
-      "O backoffice não funciona no GitHub Pages — ele exige o servidor Python local com API. " +
-        "Inicie com .\\scripts\\serve.ps1 e acesse http://localhost:8765/backoffice/login.html"
+  if (isGitHubPagesHost()) {
+    showInfo(
+      "Você está no GitHub Pages. A navegação funciona aqui, mas login e salvamento exigem o servidor local " +
+        "(.\\scripts\\serve.ps1 → http://localhost:8765/backoffice/login.html)."
     );
-    btn.disabled = true;
-    return false;
+    btn.disabled = false;
+    return true;
   }
 
   if (window.location.protocol === "file:") {
@@ -57,7 +58,7 @@ async function checkEnvironment() {
 async function redirectIfLoggedIn() {
   try {
     await authApi.me();
-    window.location.href = "/backoffice/index.html";
+    window.location.href = backofficePath("index.html");
   } catch {
     /* permanece na tela de login */
   }
@@ -72,7 +73,7 @@ form.addEventListener("submit", async (ev) => {
   const password = String(data.get("password") || "").trim();
   try {
     await authApi.login(username, password);
-    window.location.href = "/backoffice/index.html";
+    window.location.href = backofficePath("index.html");
   } catch (err) {
     showError(err.message || "Falha no login");
   } finally {

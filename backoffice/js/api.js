@@ -1,4 +1,6 @@
-const API_BASE = "";
+import { appBase, appUrl } from "./paths.js";
+
+const API_BASE = appBase();
 
 const API_UNAVAILABLE_MSG =
   "API indisponível na porta 8765. Pare o servidor antigo (Ctrl+C no terminal) e inicie com: .\\scripts\\serve.ps1 — esse script sobe a API do backoffice junto com os arquivos estáticos.";
@@ -94,7 +96,7 @@ export async function requireAuth() {
     return await authApi.me();
   } catch (err) {
     if (err.status === 401) {
-      window.location.href = "/backoffice/login.html";
+      window.location.href = backofficePath("login.html");
       return null;
     }
     throw err;

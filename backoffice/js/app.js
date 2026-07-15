@@ -1,4 +1,5 @@
 import { api, auditApi, authApi, requireAuth, usersApi } from "./api.js";
+import { appUrl, backofficePath } from "./paths.js";
 import {
   NIVEIS,
   NIVEL_LABELS,
@@ -84,7 +85,7 @@ function updateSidebarUser(user) {
     <button type="button" class="bo-btn bo-btn--ghost bo-btn--sm bo-btn--block" id="btn-logout">Sair</button>`;
   $("#btn-logout", sidebarUser).addEventListener("click", async () => {
     await authApi.logout();
-    window.location.href = "/backoffice/login.html";
+    window.location.href = backofficePath("login.html");
   });
 }
 
@@ -1247,7 +1248,7 @@ async function renderRevisao() {
       <div class="bo-form__actions">
         <button type="button" class="bo-btn bo-btn--primary" id="btn-validate">Validar</button>
         <button type="button" class="bo-btn bo-btn--primary" id="btn-publish">Publicar apresentação</button>
-        <a class="bo-btn" id="link-preview" href="/presentations/${esc(state.ref.config.presentationSlug)}/index.html" target="_blank" rel="noopener">Abrir preview</a>
+        <a class="bo-btn" id="link-preview" href="${esc(appUrl(`/presentations/${state.ref.config.presentationSlug}/index.html`))}" target="_blank" rel="noopener">Abrir preview</a>
       </div>
       <div id="validation-result" class="bo-subsection"></div>
     </div>
