@@ -1,4 +1,4 @@
-import { api } from "./api.js";
+import { api, auditApi, authApi, requireAuth, usersApi } from "./api.js";
 import {
   NIVEIS,
   NIVEL_LABELS,
@@ -23,6 +23,7 @@ const state = {
   saving: false,
   hierForm: null,
   indForm: null,
+  currentUser: null,
 };
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -33,6 +34,8 @@ const pageTitle = $("#page-title");
 const pageSubtitle = $("#page-subtitle");
 const topbarActions = $("#topbar-actions");
 const mainNav = $("#main-nav");
+const adminNav = $("#admin-nav");
+const sidebarUser = $("#sidebar-user");
 const toastEl = $("#toast");
 const globalError = $("#global-error");
 
@@ -63,6 +66,25 @@ function setNavVisible(visible) {
   mainNav.hidden = !visible;
   $$(".bo-nav__item", mainNav).forEach((btn) => {
     btn.classList.toggle("is-active", visible && btn.dataset.step === state.step);
+  });
+}
+
+function setAdminNavVisible(visible) {
+  adminNav.hidden = !visible;
+  if (!visible) return;
+  $$(".bo-nav__item", adminNav).forEach((btn) => {
+    btn.classList.toggle("is-active", btn.dataset.step === state.step);
+  });
+}
+
+function updateSidebarUser(user) {
+  sidebarUser.innerHTML = `
+    <strong>${esc(user.nome)}</strong>
+    <span class="bo-user__role">${user.role === "admin" ? "Administrador" : "Usuário"}</span>
+    <button type="button" class="bo-btn bo-btn--ghost bo-btn--sm bo-btn--block" id="btn-logout">Sair</button>`;
+  $("#btn-logout", sidebarUser).addEventListener("click", async () => {
+    await authApi.logout();
+    window.location.href = "/backoffice/login.html";
   });
 }
 
@@ -159,11 +181,30 @@ async function goHome() {
   state.step = "home";
   state.dirty = false;
   setNavVisible(false);
+  setAdminNavVisible(state.currentUser?.role === "admin");
   pageTitle.textContent = "Referências";
   pageSubtitle.textContent = "Cadastre indicadores diretamente na tela";
   renderTopbarActions();
   showError("");
   await renderHome();
+}
+
+function goAdminStep(step) {
+  if (state.currentUser?.role !== "admin") {
+    showError("Acesso restrito a administradores.");
+    return;
+  }
+  if (state.dirty && !confirm("Há alterações não salvas. Deseja sair mesmo assim?")) return;
+  state.ref = null;
+  state.step = step;
+  state.dirty = false;
+  setNavVisible(false);
+  setAdminNavVisible(true);
+  pageTitle.textContent = step === "usuarios" ? "Usuários" : "Auditoria";
+  pageSubtitle.textContent =
+    step === "usuarios" ? "Gerencie contas e perfis de acesso" : "Histórico de ações no sistema";
+  renderTopbarActions();
+  renderStep();
 }
 
 async function openRef(id) {
@@ -173,6 +214,7 @@ async function openRef(id) {
   state.step = "config";
   state.dirty = false;
   setNavVisible(true);
+  setAdminNavVisible(false);
   pageTitle.textContent = ref.config.diretoria || ref.id;
   pageSubtitle.textContent = `Referência ${ref.config.mesReferencia || "—"} · ${ref.config.areaResponsavel || "—"}`;
   renderTopbarActions();
@@ -213,7 +255,7 @@ async function renderHome() {
         <td>${r.updatedAt ? new Date(r.updatedAt).toLocaleString("pt-BR") : "—"}</td>
         <td class="bo-inline-actions">
           <button type="button" class="bo-btn bo-btn--sm bo-btn--primary" data-open="${r.id}">Abrir</button>
-          <button type="button" class="bo-btn bo-btn--sm bo-btn--danger" data-del="${r.id}">Excluir</button>
+          ${state.currentUser?.role === "admin" ? `<button type="button" class="bo-btn bo-btn--sm bo-btn--danger" data-del="${r.id}">Excluir</button>` : ""}
         </td>
       </tr>`
       )
@@ -1267,10 +1309,219 @@ function renderStep() {
     case "revisao":
       renderRevisao();
       break;
+    case "usuarios":
+      renderUsuarios();
+      break;
+    case "auditoria":
+      renderAuditoria();
+      break;
     default:
       goHome();
   }
   renderTopbarActions();
+}
+
+async function renderUsuarios() {
+  const users = await usersApi.list();
+  appRoot.innerHTML = `
+    <div class="bo-panel">
+      <div class="bo-panel__header">
+        <h2>Usuários do sistema</h2>
+        <button type="button" class="bo-btn bo-btn--primary" id="btn-new-user">Novo usuário</button>
+      </div>
+      <div class="bo-table-wrap">
+        <table class="bo-table">
+          <thead>
+            <tr>
+              <th>Usuário</th>
+              <th>Nome</th>
+              <th>Perfil</th>
+              <th>Status</th>
+              <th>Criado</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="users-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="bo-panel bo-panel--muted" id="user-form-panel" hidden>
+      <h3 id="user-form-title">Novo usuário</h3>
+      <form class="bo-form bo-form--grid" id="form-user">
+        <input type="hidden" name="userId" value="">
+        <label>Nome completo<input name="nome" required placeholder="Maria Silva"></label>
+        <label>Usuário (login)<input name="username" required pattern="[a-z0-9._-]+" placeholder="maria.silva"></label>
+        <label>Senha<input name="password" type="password" minlength="6" placeholder="Mínimo 6 caracteres"></label>
+        <label>Perfil
+          <select name="role" required>
+            <option value="user">Usuário</option>
+            <option value="admin">Administrador</option>
+          </select>
+        </label>
+        <label class="bo-form__actions--full" id="user-ativo-wrap" hidden>
+          <input type="checkbox" name="ativo" checked> Conta ativa
+        </label>
+        <div class="bo-form__actions bo-form__actions--full">
+          <button type="submit" class="bo-btn bo-btn--primary">Salvar</button>
+          <button type="button" class="bo-btn bo-btn--ghost" id="btn-cancel-user">Cancelar</button>
+        </div>
+      </form>
+    </div>`;
+
+  const tbody = $("#users-tbody", appRoot);
+  tbody.innerHTML = users.length
+    ? users
+        .map(
+          (u) => `
+      <tr>
+        <td><code>${esc(u.username)}</code></td>
+        <td>${esc(u.nome)}</td>
+        <td>${u.role === "admin" ? "Administrador" : "Usuário"}</td>
+        <td><span class="bo-badge bo-badge--${u.ativo ? "published" : "draft"}">${u.ativo ? "Ativo" : "Inativo"}</span></td>
+        <td>${u.createdAt ? new Date(u.createdAt).toLocaleString("pt-BR") : "—"}</td>
+        <td class="bo-inline-actions">
+          <button type="button" class="bo-btn bo-btn--sm" data-edit-user="${esc(u.id)}">Editar</button>
+          ${u.id !== state.currentUser?.id ? `<button type="button" class="bo-btn bo-btn--sm bo-btn--danger" data-del-user="${esc(u.id)}">Excluir</button>` : ""}
+        </td>
+      </tr>`
+        )
+        .join("")
+    : `<tr><td colspan="6" class="bo-empty">Nenhum usuário cadastrado</td></tr>`;
+
+  const formPanel = $("#user-form-panel", appRoot);
+  const form = $("#form-user", appRoot);
+  const ativoWrap = $("#user-ativo-wrap", appRoot);
+
+  function openCreateForm() {
+    form.reset();
+    form.userId.value = "";
+    form.username.disabled = false;
+    form.password.required = true;
+    ativoWrap.hidden = true;
+    $("#user-form-title", appRoot).textContent = "Novo usuário";
+    formPanel.hidden = false;
+  }
+
+  function openEditForm(user) {
+    form.userId.value = user.id;
+    form.nome.value = user.nome;
+    form.username.value = user.username;
+    form.username.disabled = true;
+    form.password.value = "";
+    form.password.required = false;
+    form.role.value = user.role;
+    form.ativo.checked = user.ativo !== false;
+    ativoWrap.hidden = false;
+    $("#user-form-title", appRoot).textContent = `Editar — ${user.username}`;
+    formPanel.hidden = false;
+  }
+
+  $("#btn-new-user", appRoot).addEventListener("click", openCreateForm);
+  $("#btn-cancel-user", appRoot).addEventListener("click", () => {
+    formPanel.hidden = true;
+  });
+
+  $$("[data-edit-user]", appRoot).forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const user = users.find((u) => u.id === btn.dataset.editUser);
+      if (user) openEditForm(user);
+    });
+  });
+
+  $$("[data-del-user]", appRoot).forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const user = users.find((u) => u.id === btn.dataset.delUser);
+      if (!user || !confirm(`Excluir usuário "${user.username}"?`)) return;
+      try {
+        await usersApi.delete(user.id);
+        showToast("Usuário excluído");
+        await renderUsuarios();
+      } catch (err) {
+        showError(err.message);
+      }
+    });
+  });
+
+  form.addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const fd = new FormData(form);
+    const userId = fd.get("userId");
+    const body = {
+      nome: fd.get("nome"),
+      username: fd.get("username"),
+      role: fd.get("role"),
+    };
+    const password = fd.get("password");
+    if (password) body.password = password;
+    if (userId) body.ativo = fd.get("ativo") === "on";
+
+    try {
+      if (userId) {
+        await usersApi.update(userId, body);
+        showToast("Usuário atualizado");
+      } else {
+        if (!password) {
+          showError("Informe uma senha para o novo usuário.");
+          return;
+        }
+        await usersApi.create(body);
+        showToast("Usuário criado");
+      }
+      formPanel.hidden = true;
+      await renderUsuarios();
+    } catch (err) {
+      showError(err.message);
+    }
+  });
+}
+
+async function renderAuditoria() {
+  const entries = await auditApi.list(200);
+  appRoot.innerHTML = `
+    <div class="bo-panel">
+      <h2>Log de auditoria</h2>
+      <p class="bo-help">Registro das últimas ações realizadas no backoffice (login, salvamentos, publicações, gestão de usuários).</p>
+      <div class="bo-table-wrap">
+        <table class="bo-table">
+          <thead>
+            <tr>
+              <th>Data/hora</th>
+              <th>Usuário</th>
+              <th>Perfil</th>
+              <th>Ação</th>
+              <th>Detalhe</th>
+              <th>IP</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${
+              entries.length
+                ? entries
+                    .map(
+                      (e) => `
+              <tr>
+                <td>${e.ts ? new Date(e.ts).toLocaleString("pt-BR") : "—"}</td>
+                <td>${esc(e.username || "—")}</td>
+                <td>${e.role === "admin" ? "Admin" : e.role === "user" ? "Usuário" : "—"}</td>
+                <td><code>${esc(e.action)}</code></td>
+                <td>${esc(formatAuditDetail(e.detail))}</td>
+                <td>${esc(e.ip || "—")}</td>
+              </tr>`
+                    )
+                    .join("")
+                : `<tr><td colspan="6" class="bo-empty">Nenhum registro ainda</td></tr>`
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+function formatAuditDetail(detail) {
+  if (!detail || !Object.keys(detail).length) return "—";
+  return Object.entries(detail)
+    .map(([k, v]) => `${k}: ${v}`)
+    .join(" · ");
 }
 
 function esc(value) {
@@ -1287,5 +1538,19 @@ $$(".bo-nav__item", mainNav).forEach((btn) =>
     if (state.step !== btn.dataset.step) goStep(btn.dataset.step);
   })
 );
+$$(".bo-nav__item", adminNav).forEach((btn) =>
+  btn.addEventListener("click", () => {
+    if (state.step !== btn.dataset.step) goAdminStep(btn.dataset.step);
+  })
+);
 
-renderHome().catch((err) => showError(err.message));
+async function bootstrap() {
+  const user = await requireAuth();
+  if (!user) return;
+  state.currentUser = user;
+  updateSidebarUser(user);
+  setAdminNavVisible(user.role === "admin");
+  await renderHome();
+}
+
+bootstrap().catch((err) => showError(err.message));

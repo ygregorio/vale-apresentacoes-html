@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Backoffice Vale</title>
+  <link rel="stylesheet" href="css/backoffice.css">
+</head>
+<body class="bo-login-page">
+  <div class="bo-login">
+    <div class="bo-login__card">
+      <div class="bo-login__brand">
+        <span class="bo-login__logo">Vale</span>
+        <span class="bo-login__subtitle">Backoffice de Indicadores</span>
+      </div>
+      <form class="bo-form" id="login-form">
+        <label>Usuário<input name="username" required autocomplete="username" autofocus></label>
+        <label>Senha<input name="password" type="password" required autocomplete="current-password"></label>
+        <div class="bo-alert bo-alert--error" id="login-error" hidden></div>
+        <button type="submit" class="bo-btn bo-btn--primary bo-btn--block" id="btn-login">Entrar</button>
+      </form>
+      <p class="bo-login__footer"><a href="/">← Voltar ao portal</a></p>
+    </div>
+  </div>
+  <script type="module" src="js/login.js"></script>
+</body>
+</html>

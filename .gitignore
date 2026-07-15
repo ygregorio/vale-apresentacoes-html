@@ -9,6 +9,12 @@ presentation-kit/assets/catalog.json
 __pycache__/
 *.pyc
 
+# Autenticação (dados sensíveis / runtime)
+data/auth/users.json
+data/auth/sessions.json
+data/auth/audit-log.jsonl
+data/auth/.bootstrap-admin.txt
+
 # OS
 .DS_Store
 Thumbs.db

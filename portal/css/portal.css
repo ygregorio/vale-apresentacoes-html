@@ -1,0 +1,206 @@
+:root {
+  --portal-bg: #f4f6f8;
+  --portal-surface: #ffffff;
+  --portal-text: #1a2332;
+  --portal-muted: #5c6b7a;
+  --portal-primary: #007e7a;
+  --portal-primary-dark: #00615e;
+  --portal-border: #d8dee6;
+  --portal-radius: 12px;
+  --portal-shadow: 0 10px 30px rgba(26, 35, 50, 0.08);
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--portal-bg);
+  color: var(--portal-text);
+  min-height: 100vh;
+}
+
+a { color: var(--portal-primary); text-decoration: none; }
+a:hover { color: var(--portal-primary-dark); }
+
+.portal-header {
+  background: #0f2f2e;
+  color: #e8f4f3;
+  padding: 1rem 1.5rem;
+}
+
+.portal-header__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.portal-brand { display: flex; flex-direction: column; gap: 0.1rem; }
+.portal-brand__logo { font-weight: 700; font-size: 1.4rem; letter-spacing: 0.04em; }
+.portal-brand__tag { font-size: 0.85rem; opacity: 0.75; }
+
+.portal-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.55rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.portal-btn--ghost {
+  color: #e8f4f3;
+  border-color: rgba(255,255,255,0.25);
+}
+
+.portal-btn--ghost:hover {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+
+.portal-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+}
+
+.portal-hero h1 {
+  margin: 0 0 0.5rem;
+  color: var(--portal-primary);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+}
+
+.portal-hero p {
+  margin: 0;
+  color: var(--portal-muted);
+  max-width: 640px;
+}
+
+.portal-section { margin-top: 2.5rem; }
+.portal-section--muted {
+  background: var(--portal-surface);
+  border: 1px solid var(--portal-border);
+  border-radius: var(--portal-radius);
+  padding: 1.5rem;
+  box-shadow: var(--portal-shadow);
+}
+
+.portal-section__head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.portal-section__head h2 { margin: 0; font-size: 1.2rem; }
+
+.portal-badge {
+  background: #e8f4f3;
+  color: var(--portal-primary-dark);
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+}
+
+.portal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.portal-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  background: var(--portal-surface);
+  border: 1px solid var(--portal-border);
+  border-radius: var(--portal-radius);
+  padding: 1.1rem 1.15rem;
+  box-shadow: var(--portal-shadow);
+  color: inherit;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+  min-height: 160px;
+}
+
+.portal-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--portal-primary);
+}
+
+.portal-card h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--portal-primary-dark);
+}
+
+.portal-card p {
+  margin: 0;
+  color: var(--portal-muted);
+  font-size: 0.92rem;
+  flex: 1;
+}
+
+.portal-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  color: var(--portal-muted);
+}
+
+.portal-card__tag {
+  background: #eef2f5;
+  padding: 0.15rem 0.45rem;
+  border-radius: 6px;
+}
+
+.portal-card__tag--published { background: #e8f6ef; color: #1e8449; }
+.portal-card__tag--draft { background: #fef5e7; color: #b9770e; }
+
+.portal-card__cta {
+  margin-top: 0.35rem;
+  font-weight: 600;
+  color: var(--portal-primary);
+}
+
+.portal-card--admin .portal-card__icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.portal-admin-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.portal-loading,
+.portal-empty,
+.portal-error {
+  grid-column: 1 / -1;
+  color: var(--portal-muted);
+  margin: 0;
+}
+
+.portal-error { color: #c0392b; }
+
+.portal-note {
+  margin: 1rem 0 0;
+  color: var(--portal-muted);
+}
+
+.portal-footer {
+  border-top: 1px solid var(--portal-border);
+  padding: 1rem 1.5rem;
+  text-align: center;
+  color: var(--portal-muted);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 640px) {
+  .portal-header__inner { flex-direction: column; align-items: flex-start; }
+}

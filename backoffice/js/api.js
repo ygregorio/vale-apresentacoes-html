@@ -22,12 +22,15 @@ function parseResponseError(text, status) {
 
 async function request(path, options = {}) {
   const res = await fetch(`${API_BASE}${path}`, {
+    credentials: "include",
     headers: { "Content-Type": "application/json", ...(options.headers || {}) },
     ...options,
   });
   const text = await res.text();
   if (!res.ok) {
-    throw new Error(parseResponseError(text, res.status));
+    const err = new Error(parseResponseError(text, res.status));
+    err.status = res.status;
+    throw err;
   }
   if (!text) return null;
   try {
@@ -36,6 +39,36 @@ async function request(path, options = {}) {
     throw new Error(parseResponseError(text, res.status));
   }
 }
+
+export const authApi = {
+  login: (username, password) =>
+    request("/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify({ username, password }),
+    }),
+  logout: () => request("/api/auth/logout", { method: "POST", body: "{}" }),
+  me: () => request("/api/auth/me"),
+};
+
+export const usersApi = {
+  list: () => request("/api/users"),
+  create: (body) => request("/api/users", { method: "POST", body: JSON.stringify(body) }),
+  update: (id, body) =>
+    request(`/api/users/${encodeURIComponent(id)}`, {
+      method: "PUT",
+      body: JSON.stringify(body),
+    }),
+  delete: (id) =>
+    request(`/api/users/${encodeURIComponent(id)}`, { method: "DELETE" }),
+};
+
+export const auditApi = {
+  list: (limit = 200) => request(`/api/audit-log?limit=${limit}`),
+};
+
+export const publicApi = {
+  listPresentations: () => request("/api/public/presentations"),
+};
 
 export const api = {
   listReferencias: () => request("/api/referencias"),
@@ -54,3 +87,15 @@ export const api = {
   publish: (id) =>
     request(`/api/referencias/${encodeURIComponent(id)}/publish`, { method: "POST", body: "{}" }),
 };
+
+export async function requireAuth() {
+  try {
+    return await authApi.me();
+  } catch (err) {
+    if (err.status === 401) {
+      window.location.href = "/backoffice/login.html";
+      return null;
+    }
+    throw err;
+  }
+}

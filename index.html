@@ -4,22 +4,53 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vale — Apresentações HTML</title>
-  <style>
-    body { font-family: "Segoe UI", sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; color: #1a2332; }
-    h1 { color: #007e7a; }
-    a { color: #007e7a; }
-    li { margin: 0.35rem 0; }
-  </style>
+  <link rel="stylesheet" href="portal/css/portal.css">
 </head>
 <body>
-  <h1>Apresentações HTML — Vale</h1>
-  <p>Atalhos principais publicados neste repositório:</p>
-  <ul>
-    <li><a href="backoffice/index.html">Backoffice de indicadores</a></li>
-    <li><a href="presentations/indicadores-transportes-teste/index.html">Indicadores Transportes (teste)</a></li>
-    <li><a href="presentations/modelo-graficos/index.html">Modelo de gráficos</a></li>
-    <li><a href="presentations/modelos-capa/index.html">Modelos de capa</a></li>
-  </ul>
-  <p><small>O backoffice completo (API + salvamento) requer o servidor Python local (<code>scripts/serve.ps1</code>).</small></p>
+  <header class="portal-header">
+    <div class="portal-header__inner">
+      <div class="portal-brand">
+        <span class="portal-brand__logo">Vale</span>
+        <span class="portal-brand__tag">Apresentações HTML</span>
+      </div>
+      <a class="portal-btn portal-btn--ghost" href="/backoffice/login.html" id="link-backoffice">Backoffice</a>
+    </div>
+  </header>
+
+  <main class="portal-main">
+    <section class="portal-hero">
+      <h1>Portal de apresentações</h1>
+      <p>Escolha uma apresentação publicada ou acesse o backoffice para cadastrar indicadores.</p>
+    </section>
+
+    <section class="portal-section">
+      <div class="portal-section__head">
+        <h2>Apresentações disponíveis</h2>
+        <span class="portal-badge" id="pres-count">—</span>
+      </div>
+      <div class="portal-grid" id="presentations-grid">
+        <p class="portal-loading">Carregando apresentações…</p>
+      </div>
+    </section>
+
+    <section class="portal-section portal-section--muted">
+      <h2>Administração</h2>
+      <div class="portal-admin-cards">
+        <a class="portal-card portal-card--admin" href="/backoffice/login.html">
+          <span class="portal-card__icon">⚙</span>
+          <h3>Backoffice</h3>
+          <p>Cadastre referências, hierarquia, indicadores e publique slides HTML.</p>
+          <span class="portal-card__cta">Fazer login →</span>
+        </a>
+      </div>
+      <p class="portal-note"><small>O backoffice exige autenticação. Use o servidor Python (<code>scripts/serve.ps1</code>) para API e salvamento.</small></p>
+    </section>
+  </main>
+
+  <footer class="portal-footer">
+    <span>Vale — Kit de apresentações HTML</span>
+  </footer>
+
+  <script type="module" src="portal/js/portal.js"></script>
 </body>
 </html>

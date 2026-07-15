@@ -405,6 +405,87 @@ body {
   color: var(--bo-muted);
 }
 
+.bo-nav--admin {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
+
+.bo-nav__section {
+  display: block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.55;
+  margin-bottom: 0.35rem;
+  padding: 0 0.75rem;
+}
+
+.bo-sidebar__user {
+  margin-bottom: 0.75rem;
+  padding: 0.65rem 0.75rem;
+  background: rgba(255,255,255,0.06);
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+
+.bo-sidebar__user strong { display: block; }
+.bo-sidebar__user .bo-user__role {
+  display: block;
+  opacity: 0.7;
+  margin: 0.15rem 0 0.5rem;
+  font-size: 0.78rem;
+}
+
+.bo-sidebar__portal {
+  margin-top: 0.35rem;
+  text-align: center;
+  text-decoration: none;
+}
+
+.bo-login-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, #0f2f2e 0%, #1a2332 100%);
+}
+
+.bo-login {
+  width: min(420px, calc(100vw - 2rem));
+}
+
+.bo-login__card {
+  background: var(--bo-surface);
+  border-radius: var(--bo-radius);
+  box-shadow: var(--bo-shadow);
+  padding: 1.75rem;
+}
+
+.bo-login__brand {
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.bo-login__logo {
+  display: block;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--bo-primary);
+}
+
+.bo-login__subtitle {
+  color: var(--bo-muted);
+  font-size: 0.92rem;
+}
+
+.bo-login__footer {
+  text-align: center;
+  margin: 1rem 0 0;
+  font-size: 0.9rem;
+}
+
+.bo-btn--block { width: 100%; }
+
 @media (max-width: 900px) {
   .bo-app { grid-template-columns: 1fr; }
   .bo-sidebar { flex-direction: row; flex-wrap: wrap; align-items: center; }
