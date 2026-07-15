@@ -41,6 +41,7 @@ async function request(path, options = {}) {
 }
 
 export const authApi = {
+  status: () => request("/api/auth/status"),
   login: (username, password) =>
     request("/api/auth/login", {
       method: "POST",

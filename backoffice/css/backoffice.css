@@ -277,6 +277,11 @@ body {
   color: var(--bo-danger);
   border: 1px solid #f5c6cb;
 }
+.bo-alert--info {
+  background: #e8f4f3;
+  color: #0f4c49;
+  border: 1px solid #a8d5d3;
+}
 .bo-alert ul { margin: 0.35rem 0 0; padding-left: 1.2rem; }
 
 .bo-toast {

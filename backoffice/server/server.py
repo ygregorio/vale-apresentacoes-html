@@ -45,13 +45,26 @@ def read_json_body(handler: SimpleHTTPRequestHandler) -> dict:
         raise ValueError(f"JSON inválido: {exc}") from exc
 
 
+def cors_origin(handler: SimpleHTTPRequestHandler) -> str:
+    origin = handler.headers.get("Origin")
+    if origin:
+        return origin
+    host = handler.headers.get("Host")
+    if host:
+        scheme = "https" if handler.headers.get("X-Forwarded-Proto") == "https" else "http"
+        return f"{scheme}://{host}"
+    return "http://127.0.0.1"
+
+
 def send_json(handler: SimpleHTTPRequestHandler, status: int, payload, *, set_cookie: str | None = None, clear_cookie: bool = False) -> None:
     body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
     handler.send_response(status)
     handler.send_header("Content-Type", "application/json; charset=utf-8")
     handler.send_header("Content-Length", str(len(body)))
-    handler.send_header("Access-Control-Allow-Origin", handler.headers.get("Origin") or "*")
+    handler.send_header("Access-Control-Allow-Origin", cors_origin(handler))
     handler.send_header("Access-Control-Allow-Credentials", "true")
+    handler.send_header("Vary", "Origin")
+    handler.send_header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
     handler.send_header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
     handler.send_header("Access-Control-Allow-Headers", "Content-Type")
     if set_cookie:
@@ -227,8 +240,9 @@ class BackofficeHandler(SimpleHTTPRequestHandler):
 
     def do_OPTIONS(self) -> None:
         self.send_response(204)
-        self.send_header("Access-Control-Allow-Origin", self.headers.get("Origin") or "*")
+        self.send_header("Access-Control-Allow-Origin", cors_origin(self))
         self.send_header("Access-Control-Allow-Credentials", "true")
+        self.send_header("Vary", "Origin")
         self.send_header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
         self.end_headers()
@@ -239,6 +253,18 @@ class BackofficeHandler(SimpleHTTPRequestHandler):
 
         if path == "/api/public/presentations":
             send_json(self, 200, list_public_presentations())
+            return
+
+        if path == "/api/auth/status":
+            send_json(
+                self,
+                200,
+                {
+                    "ok": True,
+                    "authReady": bool(AUTH.load_users().get("users")),
+                    "bootstrapHint": AUTH.bootstrap_hint(),
+                },
+            )
             return
 
         if path == "/api/auth/me":
@@ -310,7 +336,7 @@ class BackofficeHandler(SimpleHTTPRequestHandler):
             if path == "/api/auth/login":
                 body = read_json_body(self)
                 username = str(body.get("username", "")).strip()
-                password = str(body.get("password", ""))
+                password = str(body.get("password", "")).strip()
                 user = AUTH.authenticate(username, password)
                 if not user:
                     self._audit("auth.login_failed", detail={"username": username})
@@ -493,6 +519,11 @@ def main() -> None:
         print(f"Senha: {bootstrap_pw}")
         print(f"Também salvo em: {AUTH.bootstrap_file}")
         print("Altere a senha após o login.\n")
+    elif AUTH.bootstrap_file.exists():
+        print("\n*** LOGIN BACKOFFICE ***")
+        print("Usuário: admin")
+        print(f"Senha inicial: veja o arquivo {AUTH.bootstrap_file}")
+        print("Login: http://localhost:{}/backoffice/login.html\n".format(port))
     try:
         server.serve_forever()
     except KeyboardInterrupt:

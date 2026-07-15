@@ -70,6 +70,36 @@ class AuthStore:
     def save_sessions(self, data: dict) -> None:
         self._write_json(self.sessions_file, data)
 
+    def bootstrap_hint(self) -> str | None:
+        if not self.bootstrap_file.exists():
+            return None
+        return (
+            "Senha inicial do admin salva em data/auth/.bootstrap-admin.txt "
+            "no computador onde o servidor Python está rodando."
+        )
+
+    def reset_admin_password(self, new_password: str | None = None) -> tuple[str, str]:
+        password = (new_password or "").strip() or secrets.token_urlsafe(10)
+        if len(password) < 6:
+            raise ValueError("Senha deve ter ao menos 6 caracteres")
+
+        data = self.load_users()
+        users = data.get("users", [])
+        admin = next((u for u in users if u.get("username") == "admin"), None)
+        if not admin:
+            raise ValueError("Usuário admin não encontrado")
+
+        salt, password_hash = self.hash_password(password)
+        admin["salt"] = salt
+        admin["passwordHash"] = password_hash
+        admin["updatedAt"] = utc_now()
+        self.save_users(data)
+        self.bootstrap_file.write_text(
+            f"Usuário inicial: admin\nSenha inicial: {password}\nAltere após o login.\n",
+            encoding="utf-8",
+        )
+        return admin["username"], password
+
     def bootstrap_if_needed(self, env_password: str | None = None) -> str | None:
         data = self.load_users()
         if data.get("users"):
