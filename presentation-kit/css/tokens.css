@@ -1,0 +1,83 @@
+:root {
+  /* Paleta principal */
+  --vale-verde: #007E7A;
+  --vale-aqua: #0ABB98;
+  --vale-azul: #3CB5E5;
+  --vale-cinza-escuro: #555555;
+  --vale-branco: #FFFFFF;
+  --vale-amarelo: #ECB11F;
+  --vale-laranja: #EE6F16;
+  --vale-cereja: #C0305E;
+  --vale-preto: #000000;
+
+  /* Paleta secundária */
+  --vale-verde-escuro: #034944;
+  --vale-aqua-claro: #9DE4D6;
+  --vale-azul-escuro: #2626D1;
+  --vale-cinza-claro: #E6E7E8;
+  --vale-cinza-vale: #747678;
+  --vale-amarelo-claro: #FFDD99;
+  --vale-cereja-escuro: #991310;
+  --vale-cereja-claro: #E191C5;
+  --vale-cinza-medio: #BCBEC0;
+
+  /* Layout */
+  --slide-width: 1920;
+  --slide-height: 1080;
+  --band-width: 28px;
+  --content-padding-x: 96px;
+  --content-padding-y: 72px;
+  --logo-width: 120px;
+
+  /* Tipografia */
+  --font-family: "Vale Sans", "Segoe UI", system-ui, sans-serif;
+  --font-size-cover-title: clamp(2rem, 4vw, 3.25rem);
+  --font-size-slide-title: clamp(1.5rem, 2.8vw, 2.25rem);
+  --font-size-body: clamp(1rem, 1.6vw, 1.375rem);
+  --font-size-small: clamp(0.75rem, 1.1vw, 0.875rem);
+
+  /* Transições */
+  --transition-slide: 350ms ease;
+  --transition-reveal: 400ms ease;
+
+  /* Tema ativo (sobrescrito por data-theme no body ou slide) */
+  --theme-cover: var(--vale-verde);
+  --theme-chapter: var(--vale-aqua);
+  --theme-band: var(--vale-aqua);
+  --theme-accent: var(--vale-aqua);
+}
+
+[data-theme="verde-aqua"] {
+  --theme-cover: var(--vale-verde);
+  --theme-chapter: var(--vale-aqua);
+  --theme-band: var(--vale-aqua);
+  --theme-accent: var(--vale-aqua);
+}
+
+[data-theme="aqua-azul"] {
+  --theme-cover: var(--vale-aqua);
+  --theme-chapter: var(--vale-azul);
+  --theme-band: var(--vale-azul);
+  --theme-accent: var(--vale-azul);
+}
+
+[data-theme="azul-cereja"] {
+  --theme-cover: var(--vale-azul);
+  --theme-chapter: var(--vale-cereja);
+  --theme-band: var(--vale-cereja);
+  --theme-accent: var(--vale-cereja);
+}
+
+[data-theme="cereja-amarelo"] {
+  --theme-cover: var(--vale-cereja);
+  --theme-chapter: var(--vale-amarelo);
+  --theme-band: var(--vale-amarelo);
+  --theme-accent: var(--vale-amarelo);
+}
+
+[data-theme="amarelo-verde"] {
+  --theme-cover: var(--vale-amarelo);
+  --theme-chapter: var(--vale-verde);
+  --theme-band: var(--vale-verde);
+  --theme-accent: var(--vale-verde);
+}

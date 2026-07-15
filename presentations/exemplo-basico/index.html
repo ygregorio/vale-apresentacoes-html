@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="verde-aqua">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exemplo — Apresentação Vale</title>
+  <link rel="stylesheet" href="../../presentation-kit/css/tokens.css">
+  <link rel="stylesheet" href="../../presentation-kit/css/base.css">
+  <link rel="stylesheet" href="../../presentation-kit/css/slides.css">
+  <link rel="stylesheet" href="../../presentation-kit/css/components.css">
+</head>
+<body>
+  <div class="deck__progress"></div>
+
+  <div class="deck">
+    <div class="deck__viewport">
+      <div class="deck__slides">
+
+        <!-- Capa -->
+        <section class="slide slide--cover is-active">
+          <div class="slide__grafismo" aria-hidden="true"></div>
+          <div class="slide__cover-content">
+            <span class="slide__public-label">Informação Pública</span>
+            <h1 class="slide__title">Título da apresentação</h1>
+            <p class="slide__subtitle">Subtítulo ou contexto breve</p>
+          </div>
+          <!-- Logo e grafismos aplicados via assets.js -->
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+        <!-- Agenda -->
+        <section class="slide slide--agenda" data-chapter-theme="aqua">
+          <aside class="slide__band"></aside>
+          <div class="slide__body">
+            <h2 class="slide__title">Nossa agenda</h2>
+            <div class="slide__content">
+              <ol>
+                <li class="reveal-item">Quem somos</li>
+                <li class="reveal-item"><span data-icon="mina"></span> Nossas atividades</li>
+                <li class="reveal-item"><span data-icon="resultados"></span> Nossos números</li>
+                <li class="reveal-item">Próximos passos</li>
+              </ol>
+            </div>
+          </div>
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+        <!-- Capa capítulo 1 -->
+        <section class="slide slide--chapter">
+          <div class="slide__chapter-grafismo" aria-hidden="true"><img src="" alt=""></div>
+          <div class="slide__chapter-inner">
+            <div class="slide__chapter-number">1</div>
+            <h2 class="slide__title">Quem somos</h2>
+          </div>
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+        <!-- Conteúdo capítulo 1 -->
+        <section class="slide slide--content-text" data-chapter="1" data-chapter-theme="aqua">
+          <aside class="slide__band"></aside>
+          <header class="slide__chapter-label">
+            <span class="slide__chapter-number">1</span>
+            <span class="slide__chapter-title">Quem somos</span>
+          </header>
+          <div class="slide__body">
+            <h2 class="slide__title">Existimos para melhorar a vida e transformar o futuro</h2>
+            <div class="slide__content">
+              <p class="reveal-item">Somos uma mineradora que busca acelerar a transição para um mundo mais sustentável.</p>
+              <p class="reveal-item" style="margin-top:1rem">Colocamos a <span class="text-bold">segurança</span> no centro de tudo o que fazemos, com processos inovadores para melhorar a vida.</p>
+            </div>
+          </div>
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+        <!-- Capa capítulo 2 -->
+        <section class="slide slide--chapter">
+          <div class="slide__chapter-grafismo" aria-hidden="true"><img src="" alt=""></div>
+          <div class="slide__chapter-inner">
+            <div class="slide__chapter-number">2</div>
+            <h2 class="slide__title">Nossos números</h2>
+          </div>
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+        <!-- Gráfico -->
+        <section class="slide slide--chart" data-chapter="2" data-chapter-theme="aqua">
+          <aside class="slide__band"></aside>
+          <header class="slide__chapter-label">
+            <span class="slide__chapter-number">2</span>
+            <span class="slide__chapter-title">Nossos números</span>
+          </header>
+          <div class="slide__body">
+            <h2 class="slide__title">Produção trimestral (Mt)</h2>
+            <div class="chart-container">
+              <canvas data-chart="data/producao.json" role="img" aria-label="Gráfico de produção trimestral"></canvas>
+            </div>
+            <footer class="slide__footnote">Fonte: dados de exemplo · 2026</footer>
+          </div>
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+        <!-- Quiz -->
+        <section class="slide slide--interactive" data-chapter="2" data-chapter-theme="aqua" data-slide-id="quiz-1">
+          <aside class="slide__band"></aside>
+          <header class="slide__chapter-label">
+            <span class="slide__chapter-number">2</span>
+            <span class="slide__chapter-title">Nossos números</span>
+          </header>
+          <div class="slide__body">
+            <h2 class="slide__title">Verificação de aprendizado</h2>
+            <div class="quiz" data-correct="1" data-quiz-id="exemplo-1">
+              <p class="quiz__question">Qual valor está no centro de tudo o que a Vale faz?</p>
+              <div class="quiz__options">
+                <button type="button" class="quiz__option reveal-item">Produtividade</button>
+                <button type="button" class="quiz__option reveal-item">Segurança</button>
+                <button type="button" class="quiz__option reveal-item">Expansão</button>
+              </div>
+              <p class="quiz__feedback"></p>
+            </div>
+          </div>
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+        <!-- Encerramento -->
+        <section class="slide slide--closing" data-chapter-theme="aqua">
+          <aside class="slide__band"></aside>
+          <div class="slide__body" style="justify-content:center">
+            <h2 class="slide__title">Obrigado</h2>
+            <p class="slide__content text-muted">Transformando, hoje, o futuro.</p>
+          </div>
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <nav class="deck__nav" aria-label="Navegação da apresentação">
+    <button type="button" class="deck__nav-btn" data-action="prev" aria-label="Slide anterior">←</button>
+    <span class="deck__counter">1 / 8</span>
+    <button type="button" class="deck__nav-btn" data-action="next" aria-label="Próximo slide">→</button>
+  </nav>
+
+  <script type="module" src="../../presentation-kit/js/deck.js"></script>
+</body>
+</html>

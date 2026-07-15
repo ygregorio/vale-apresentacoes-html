@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="verde-aqua">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teste — Logo transparente</title>
+  <link rel="stylesheet" href="../../presentation-kit/css/tokens.css">
+  <link rel="stylesheet" href="../../presentation-kit/css/base.css">
+  <link rel="stylesheet" href="../../presentation-kit/css/slides.css">
+  <link rel="stylesheet" href="../../presentation-kit/css/components.css">
+  <link rel="stylesheet" href="logo-test.css">
+</head>
+<body>
+  <div class="deck__progress"></div>
+
+  <div class="deck">
+    <div class="deck__viewport">
+      <div class="deck__slides">
+
+        <section class="slide slide--cover is-active">
+          <div class="slide__grafismo" aria-hidden="true"></div>
+          <div class="slide__cover-content">
+            <span class="slide__public-label">Teste interno</span>
+            <h1 class="slide__title">Logo com fundo transparente</h1>
+            <p class="slide__subtitle">Validação visual do PNG gerado a partir do JPG oficial</p>
+          </div>
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+        <section class="slide slide--content-text slide--logo-test" data-chapter-theme="aqua">
+          <aside class="slide__band"></aside>
+          <div class="slide__body">
+            <h2 class="slide__title">O que este teste verifica</h2>
+            <div class="slide__content logo-test__intro">
+              <ul>
+                <li class="reveal-item">A logo <strong>colorida</strong> (<code>vale-logo-color.png</code>) em fundos brancos; logo <strong>branca</strong> (<code>vale-logo-white.png</code>) em fundos coloridos — aplicado via <code>assets.js</code>.</li>
+                <li class="reveal-item">Override manual: <code>data-logo="white"</code> ou <code>data-logo="color"</code> no slide.</li>
+                <li class="reveal-item">Posição padrão no canto inferior direito (<code>.slide__logo</code>) e em painéis ampliados.</li>
+              </ul>
+              <p class="reveal-item logo-test__legend">Use ← → para navegar · Ctrl+F5 para recarregar sem cache</p>
+            </div>
+          </div>
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+        <section class="slide slide--logo-test">
+          <div class="logo-test__checker" aria-hidden="true"></div>
+          <aside class="slide__band"></aside>
+          <div class="slide__body">
+            <h2 class="slide__title">Transparência (xadrez)</h2>
+            <div class="slide__content">
+              <p class="reveal-item">Fundo xadrez revela pixels transparentes. A área ao redor da marca deve ser “vazia”, sem halo branco.</p>
+            </div>
+          </div>
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+        <section class="slide slide--content-text slide--logo-test" data-chapter-theme="aqua">
+          <aside class="slide__band"></aside>
+          <div class="slide__body">
+            <h2 class="slide__title">Colorida vs branca — fundo verde (capa)</h2>
+            <div class="slide__content">
+              <div class="logo-test__compare reveal-item">
+                <div class="logo-test__compare-col">
+                  <div class="logo-test__compare-head logo-test__compare-head--jpg">Colorida — perde contraste</div>
+                  <div class="logo-test__compare-body logo-test__bg--verde">
+                    <img src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Logo colorida">
+                  </div>
+                </div>
+                <div class="logo-test__compare-col">
+                  <div class="logo-test__compare-head logo-test__compare-head--png">Branca — identidade preservada</div>
+                  <div class="logo-test__compare-body logo-test__bg--verde">
+                    <img src="../../presentation-kit/assets/logo/vale-logo-white.png" alt="Logo branca">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide slide--content-text slide--logo-test" data-chapter-theme="aqua">
+          <aside class="slide__band"></aside>
+          <div class="slide__body">
+            <h2 class="slide__title">Colorida vs branca — gradiente</h2>
+            <div class="slide__content">
+              <div class="logo-test__compare reveal-item">
+                <div class="logo-test__compare-col">
+                  <div class="logo-test__compare-head logo-test__compare-head--jpg">Colorida</div>
+                  <div class="logo-test__compare-body logo-test__bg--gradient">
+                    <img src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Logo colorida">
+                  </div>
+                </div>
+                <div class="logo-test__compare-col">
+                  <div class="logo-test__compare-head logo-test__compare-head--png">Branca</div>
+                  <div class="logo-test__compare-body logo-test__bg--gradient">
+                    <img src="../../presentation-kit/assets/logo/vale-logo-white.png" alt="Logo branca">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide slide--content-text slide--logo-test" data-chapter-theme="aqua">
+          <aside class="slide__band"></aside>
+          <div class="slide__body">
+            <h2 class="slide__title">Branca em fundos da paleta Vale</h2>
+            <div class="slide__content">
+              <div class="logo-test__panel-grid logo-test__panel-grid--3 reveal-item">
+                <div class="logo-test__panel">
+                  <div class="logo-test__panel-label">Verde escuro</div>
+                  <div class="logo-test__panel-stage logo-test__panel-stage--pos logo-test__bg--verde-escuro">
+                    <img src="../../presentation-kit/assets/logo/vale-logo-white.png" alt="Vale">
+                  </div>
+                </div>
+                <div class="logo-test__panel">
+                  <div class="logo-test__panel-label">Aqua</div>
+                  <div class="logo-test__panel-stage logo-test__panel-stage--pos logo-test__bg--aqua">
+                    <img src="../../presentation-kit/assets/logo/vale-logo-white.png" alt="Vale">
+                  </div>
+                </div>
+                <div class="logo-test__panel">
+                  <div class="logo-test__panel-label">Azul</div>
+                  <div class="logo-test__panel-stage logo-test__panel-stage--pos logo-test__bg--azul">
+                    <img src="../../presentation-kit/assets/logo/vale-logo-white.png" alt="Vale">
+                  </div>
+                </div>
+                <div class="logo-test__panel">
+                  <div class="logo-test__panel-label">Amarelo</div>
+                  <div class="logo-test__panel-stage logo-test__panel-stage--pos logo-test__bg--amarelo">
+                    <img src="../../presentation-kit/assets/logo/vale-logo-white.png" alt="Vale">
+                  </div>
+                </div>
+                <div class="logo-test__panel">
+                  <div class="logo-test__panel-label">Cereja</div>
+                  <div class="logo-test__panel-stage logo-test__panel-stage--pos logo-test__bg--cereja">
+                    <img src="../../presentation-kit/assets/logo/vale-logo-white.png" alt="Vale">
+                  </div>
+                </div>
+                <div class="logo-test__panel">
+                  <div class="logo-test__panel-label">Cinza claro (colorida)</div>
+                  <div class="logo-test__panel-stage logo-test__panel-stage--pos logo-test__bg--cinza">
+                    <img src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+        <section class="slide slide--content-text slide--logo-test" data-chapter-theme="aqua">
+          <aside class="slide__band"></aside>
+          <div class="slide__body">
+            <h2 class="slide__title">Temas de capa (data-theme)</h2>
+            <div class="slide__content">
+              <div class="logo-test__themes reveal-item">
+                <div class="logo-test__theme-tile logo-test__bg--verde"><span>Verde</span><img src="../../presentation-kit/assets/logo/vale-logo-white.png" alt="Vale"></div>
+                <div class="logo-test__theme-tile logo-test__bg--aqua"><span>Aqua</span><img src="../../presentation-kit/assets/logo/vale-logo-white.png" alt="Vale"></div>
+                <div class="logo-test__theme-tile logo-test__bg--azul"><span>Azul</span><img src="../../presentation-kit/assets/logo/vale-logo-white.png" alt="Vale"></div>
+                <div class="logo-test__theme-tile logo-test__bg--cereja"><span>Cereja</span><img src="../../presentation-kit/assets/logo/vale-logo-white.png" alt="Vale"></div>
+                <div class="logo-test__theme-tile logo-test__bg--amarelo logo-test__theme-tile--amarelo"><span>Amarelo</span><img src="../../presentation-kit/assets/logo/vale-logo-white.png" alt="Vale"></div>
+              </div>
+              <p class="logo-test__legend reveal-item">Logo 100% branca em fundos coloridos; colorida apenas em cinza claro / branco.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide slide--cover slide--logo-test-cover">
+          <div class="slide__grafismo" aria-hidden="true"></div>
+          <div class="logo-test__checker" aria-hidden="true"></div>
+          <div class="slide__cover-content">
+            <span class="slide__public-label">Slide final</span>
+            <h1 class="slide__title">Capa real do kit</h1>
+            <p class="slide__subtitle">Logo posicionada como nas apresentações de produção</p>
+          </div>
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <nav class="deck__nav" aria-label="Navegação da apresentação">
+    <button type="button" class="deck__nav-btn" data-action="prev" aria-label="Slide anterior">←</button>
+    <span class="deck__counter">1 / 8</span>
+    <button type="button" class="deck__nav-btn" data-action="next" aria-label="Próximo slide">→</button>
+  </nav>
+
+  <script type="module" src="../../presentation-kit/js/deck.js"></script>
+</body>
+</html>

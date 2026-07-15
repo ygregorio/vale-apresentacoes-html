@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Backoffice — Indicadores Transportes</title>
+  <link rel="stylesheet" href="css/backoffice.css">
+</head>
+<body>
+  <div class="bo-app">
+    <aside class="bo-sidebar" id="sidebar">
+      <div class="bo-sidebar__brand">
+        <span class="bo-sidebar__logo">Vale</span>
+        <span class="bo-sidebar__label">Indicadores</span>
+      </div>
+      <nav class="bo-nav" id="main-nav" hidden>
+        <button type="button" class="bo-nav__item" data-step="config">Configuração</button>
+        <button type="button" class="bo-nav__item" data-step="hierarquia">Hierarquia</button>
+        <button type="button" class="bo-nav__item" data-step="indicators">Indicadores</button>
+        <button type="button" class="bo-nav__item" data-step="valores">Valores</button>
+        <button type="button" class="bo-nav__item" data-step="analises">Análises</button>
+        <button type="button" class="bo-nav__item" data-step="revisao">Revisão</button>
+      </nav>
+      <div class="bo-sidebar__footer">
+        <button type="button" class="bo-btn bo-btn--ghost bo-btn--block" id="btn-home">← Referências</button>
+      </div>
+    </aside>
+
+    <main class="bo-main">
+      <header class="bo-topbar">
+        <div>
+          <h1 class="bo-topbar__title" id="page-title">Referências</h1>
+          <p class="bo-topbar__subtitle" id="page-subtitle">Cadastre indicadores diretamente na tela</p>
+        </div>
+        <div class="bo-topbar__actions" id="topbar-actions"></div>
+      </header>
+
+      <div class="bo-toast" id="toast" hidden></div>
+      <div class="bo-alert bo-alert--error" id="global-error" hidden></div>
+
+      <section class="bo-content" id="app-root"></section>
+    </main>
+  </div>
+
+  <template id="tpl-home">
+    <div class="bo-panel">
+      <div class="bo-panel__header">
+        <h2>Referências cadastradas</h2>
+        <button type="button" class="bo-btn bo-btn--primary" id="btn-new-ref">Nova referência</button>
+      </div>
+      <div class="bo-table-wrap">
+        <table class="bo-table" id="refs-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Diretoria</th>
+              <th>Mês ref.</th>
+              <th>Status</th>
+              <th>Atualizado</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="bo-panel bo-panel--muted" id="new-ref-form" hidden>
+      <h3>Nova referência</h3>
+      <form class="bo-form bo-form--grid" id="form-new-ref">
+        <label>ID (slug)<input name="id" required pattern="[a-z0-9-]+" placeholder="transportes-so-norte-jun26"></label>
+        <label>Diretoria<input name="diretoria" required placeholder="Transportes – SO Norte"></label>
+        <label>Área responsável<input name="areaResponsavel" required placeholder="Coletivo"></label>
+        <label>Área de hierarquia<input name="areaHierarquia" placeholder="Operações — Transporte Coletivo"></label>
+        <label>Mês referência<input name="mesReferencia" required placeholder="jun/26"></label>
+        <label>Slug da apresentação<input name="presentationSlug" required pattern="[a-z0-9-]+" placeholder="indicadores-transportes-jun26"></label>
+        <div class="bo-form__actions bo-form__actions--full">
+          <button type="submit" class="bo-btn bo-btn--primary">Criar</button>
+          <button type="button" class="bo-btn bo-btn--ghost" id="btn-cancel-new">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </template>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "type": "bar",
+  "data": {
+    "labels": ["Q1", "Q2", "Q3", "Q4"],
+    "datasets": [{
+      "label": "Produção (Mt)",
+      "data": [78, 82, 85, 88],
+      "backgroundColor": ["#007E7A", "#0ABB98", "#3CB5E5", "#9DE4D6"]
+    }]
+  },
+  "options": {
+    "plugins": {
+      "title": {
+        "text": "Produção por trimestre"
+      }
+    },
+    "scales": {
+      "y": {
+        "title": { "display": true, "text": "Milhões de toneladas (Mt)" }
+      },
+      "x": {
+        "title": { "display": true, "text": "Trimestre" }
+      }
+    }
+  }
+}

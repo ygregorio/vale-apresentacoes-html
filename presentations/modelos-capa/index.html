@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="verde-aqua">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modelos de Capa — Vale (catálogo)</title>
+  <link rel="stylesheet" href="../../presentation-kit/css/tokens.css">
+  <link rel="stylesheet" href="../../presentation-kit/css/base.css">
+  <link rel="stylesheet" href="../../presentation-kit/css/slides.css">
+  <link rel="stylesheet" href="../../presentation-kit/css/cover-models.css">
+  <link rel="stylesheet" href="../../presentation-kit/css/components.css">
+</head>
+<body>
+  <div class="deck__progress"></div>
+
+  <div class="deck">
+    <div class="deck__viewport">
+      <div class="deck__slides" id="cover-model-slides">
+
+        <section class="slide slide--content-text is-active" data-chapter-theme="aqua">
+          <aside class="slide__band"></aside>
+          <div class="slide__body">
+            <h2 class="slide__title">Catálogo de capas</h2>
+            <div class="slide__content">
+              <p class="reveal-item">10 modelos de capa com <strong>uma imagem única</strong> cada — prontos para seleção no gerador.</p>
+              <p class="reveal-item" style="margin-top:0.75rem">Use <code>data-cover-model="01"</code> … <code>"10"</code> no HTML gerado.</p>
+              <ul style="margin-top:1rem">
+                <li class="reveal-item">01 Split clássico · 02 Split invertido · 03 Full bleed</li>
+                <li class="reveal-item">04 Gradiente · 05 Faixa superior · 06 Moldura</li>
+                <li class="reveal-item">07 Diagonal · 08 Wide inferior · 09 Retrato · 10 Minimal</li>
+              </ul>
+            </div>
+          </div>
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <nav class="deck__nav" aria-label="Navegação da apresentação">
+    <button type="button" class="deck__nav-btn" data-action="prev" aria-label="Slide anterior">←</button>
+    <span class="deck__counter">1 / 12</span>
+    <button type="button" class="deck__nav-btn" data-action="next" aria-label="Próximo slide">→</button>
+  </nav>
+
+  <script src="data/cover-images.js"></script>
+  <script type="module">
+    import { COVER_MODELS } from "../../presentation-kit/js/cover-models.js";
+
+    const container = document.getElementById("cover-model-slides");
+    const images = window.VALE_COVER_IMAGES || {};
+
+    COVER_MODELS.forEach((model) => {
+      const slide = document.createElement("section");
+      slide.className = "slide slide--cover slide--cover-model";
+      slide.dataset.coverModel = model.id;
+      if (model.imageFit === "contain") slide.dataset.imageFit = "contain";
+
+      slide.innerHTML = `
+        <span class="cover-model__badge">Modelo ${model.id} · ${model.name}</span>
+        <figure class="cover-model__media">
+          <img class="cover-model__image" src="${images[model.id] || ""}" alt="">
+        </figure>
+        <div class="slide__cover-content">
+          <span class="slide__public-label">Informação Pública</span>
+          <h1 class="slide__title">Pessoas e territórios em transformação</h1>
+          <p class="slide__subtitle">${model.description}</p>
+        </div>
+        <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+      `;
+      container.appendChild(slide);
+    });
+
+    const closing = document.createElement("section");
+    closing.className = "slide slide--closing";
+    closing.dataset.chapterTheme = "aqua";
+    closing.innerHTML = `
+      <aside class="slide__band"></aside>
+      <div class="slide__body" style="justify-content:center">
+        <h2 class="slide__title">Escolha o modelo no gerador</h2>
+        <p class="slide__content text-muted">Metadados em <code>presentation-kit/data/cover-models.json</code></p>
+      </div>
+      <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+    `;
+    container.appendChild(closing);
+  </script>
+  <script type="module" src="../../presentation-kit/js/deck.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+indicador_id,escopo,gerencia_id,gerencia_nome,mes,bar_primary,bar_secondary,line_rate
+ptl,consolidado,,,jan/26,7942,7579,95.43
+ptl,consolidado,,,fev/26,7188,6778,94.30
+ptl,consolidado,,,mar/26,8628,7929,91.90
+ptl,consolidado,,,abr/26,7926,7432,93.77
+ptl,consolidado,,,mai/26,7520,7159,95.20
+ovbk,consolidado,,,jan/26,2564,144,5.62
+ovbk,consolidado,,,fev/26,2402,505,21.02
+ovbk,consolidado,,,mar/26,2918,401,13.74
+ovbk,consolidado,,,abr/26,2693,531,19.72
+ovbk,consolidado,,,mai/26,2538,278,10.96
+ptl,gerencia,carajas,Carajás,jan/26,1462,1440,98.50
+ptl,gerencia,carajas,Carajás,fev/26,1370,1350,98.54
+ptl,gerencia,carajas,Carajás,mar/26,1629,1613,99.02
+ptl,gerencia,carajas,Carajás,abr/26,1436,1426,99.30
+ptl,gerencia,carajas,Carajás,mai/26,1622,1598,98.52

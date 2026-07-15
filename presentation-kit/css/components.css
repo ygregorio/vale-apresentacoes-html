@@ -1,0 +1,336 @@
+.chart-container {
+  position: relative;
+  width: 100%;
+  max-height: 420px;
+  margin-top: 1rem;
+}
+
+.chart-container canvas {
+  width: 100% !important;
+  height: auto !important;
+}
+
+.quiz {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 720px;
+}
+
+.quiz__question {
+  font-size: var(--font-size-body);
+  font-weight: 700;
+}
+
+.quiz__options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.quiz__option {
+  text-align: left;
+  padding: 14px 18px;
+  border: 2px solid var(--vale-cinza-claro);
+  border-radius: 8px;
+  background: var(--vale-branco);
+  color: var(--vale-cinza-escuro);
+  transition:
+    border-color 150ms ease,
+    background 150ms ease;
+}
+
+.quiz__option:hover {
+  border-color: var(--theme-accent);
+}
+
+.quiz__option.is-selected {
+  border-color: var(--theme-accent);
+  background: color-mix(in srgb, var(--theme-accent) 12%, white);
+}
+
+.quiz__option.is-correct {
+  border-color: var(--vale-verde);
+  background: color-mix(in srgb, var(--vale-verde) 15%, white);
+}
+
+.quiz__option.is-wrong {
+  border-color: var(--vale-cereja);
+  background: color-mix(in srgb, var(--vale-cereja) 10%, white);
+}
+
+.quiz__feedback {
+  font-size: var(--font-size-small);
+  color: var(--vale-cinza-vale);
+  min-height: 1.5em;
+}
+
+.poll-results {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 640px;
+}
+
+.poll-results__bar {
+  display: grid;
+  grid-template-columns: 140px 1fr 48px;
+  gap: 12px;
+  align-items: center;
+  font-size: var(--font-size-small);
+}
+
+.poll-results__track {
+  height: 12px;
+  background: var(--vale-cinza-claro);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.poll-results__fill {
+  height: 100%;
+  background: var(--theme-accent);
+  border-radius: 6px;
+  transition: width 400ms ease;
+}
+
+.slide--media .slide__media-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--vale-cinza-claro);
+  border-radius: 8px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.slide--media video,
+.slide--media iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
+  border: 0;
+}
+
+.reveal-item {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity var(--transition-reveal),
+    transform var(--transition-reveal);
+}
+
+.slide.is-active .reveal-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.slide.is-active .reveal-item:nth-child(1) { transition-delay: 80ms; }
+.slide.is-active .reveal-item:nth-child(2) { transition-delay: 160ms; }
+.slide.is-active .reveal-item:nth-child(3) { transition-delay: 240ms; }
+.slide.is-active .reveal-item:nth-child(4) { transition-delay: 320ms; }
+.slide.is-active .reveal-item:nth-child(5) { transition-delay: 400ms; }
+
+.icon-inline {
+  width: 1.25em;
+  height: 1.25em;
+  vertical-align: -0.2em;
+  display: inline-block;
+}
+
+.card-stat {
+  padding: 24px;
+  background: var(--vale-cinza-claro);
+  border-radius: 8px;
+  border-left: 4px solid var(--theme-accent);
+}
+
+.card-stat__value {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 700;
+  color: var(--theme-accent);
+  line-height: 1.1;
+}
+
+.card-stat__label {
+  margin-top: 8px;
+  font-size: var(--font-size-small);
+  color: var(--vale-cinza-vale);
+}
+
+/* Mapa do Brasil */
+.slide--map .slide__body {
+  gap: 0.5rem;
+  overflow: hidden;
+}
+
+.slide--map .slide__title {
+  max-width: none;
+  margin-bottom: 0;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.slide--map .map-brazil__hint {
+  flex-shrink: 0;
+  margin: 0 0 0.35rem;
+}
+
+.map-brazil {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(230px, 0.35fr);
+  gap: 16px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  align-items: stretch;
+}
+
+.map-brazil__canvas-wrap {
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  min-height: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.map-brazil__canvas {
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  aspect-ratio: 613 / 639;
+  margin-right: auto;
+}
+
+.map-brazil__canvas .map-brazil__svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.map-brazil__canvas path[id] {
+  transition: fill 160ms ease, stroke 160ms ease;
+  outline: none;
+}
+
+.map-brazil__canvas path[id]:focus,
+.map-brazil__canvas path[id]:focus-visible {
+  outline: none;
+}
+
+.map-brazil__labels text {
+  font-family: "Vale Sans", "Segoe UI", sans-serif;
+  font-weight: 700;
+  pointer-events: none;
+  text-anchor: middle;
+  dominant-baseline: central;
+  letter-spacing: 0.03em;
+  transition: fill 160ms ease;
+}
+
+.map-brazil__side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+  justify-content: center;
+}
+
+.map-brazil__detail {
+  padding: 16px 18px;
+  background: var(--vale-cinza-claro);
+  border-left: 4px solid var(--theme-accent);
+  border-radius: 4px;
+}
+
+.map-brazil__detail-title {
+  font-size: var(--font-size-small);
+  color: var(--vale-cinza-vale);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+
+.map-brazil__detail-uf {
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 700;
+  color: var(--theme-accent);
+  line-height: 1;
+}
+
+.map-brazil__detail-nome {
+  font-size: var(--font-size-body);
+  font-weight: 700;
+  color: var(--vale-cinza-escuro);
+  margin-top: 4px;
+}
+
+.map-brazil__detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 16px;
+  margin-top: 16px;
+}
+
+.map-brazil__detail-item label {
+  display: block;
+  font-size: var(--font-size-small);
+  color: var(--vale-cinza-vale);
+  margin-bottom: 2px;
+}
+
+.map-brazil__detail-item span {
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  color: var(--vale-cinza-escuro);
+}
+
+.map-brazil__legend {
+  margin-top: auto;
+}
+
+.map-brazil__legend-title {
+  font-size: var(--font-size-small);
+  font-weight: 700;
+  color: var(--vale-cinza-escuro);
+  margin-bottom: 10px;
+}
+
+.map-brazil__legend-items {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 10px;
+}
+
+.map-brazil__legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--font-size-small);
+  color: var(--vale-cinza-vale);
+}
+
+.map-brazil__legend-swatch {
+  width: 18px;
+  height: 12px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.map-brazil__hint {
+  font-size: var(--font-size-small);
+  color: var(--vale-cinza-vale);
+  font-style: italic;
+}
+
+.map-brazil__footnote {
+  margin-top: auto;
+  padding-top: 4px;
+  flex-shrink: 0;
+  font-size: var(--font-size-small);
+  color: var(--vale-cinza-vale);
+}

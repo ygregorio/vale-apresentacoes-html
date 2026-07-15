@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="verde-aqua">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa Interativo Brasil — Vale (teste)</title>
+  <link rel="stylesheet" href="../../presentation-kit/css/tokens.css">
+  <link rel="stylesheet" href="../../presentation-kit/css/base.css">
+  <link rel="stylesheet" href="../../presentation-kit/css/slides.css">
+  <link rel="stylesheet" href="../../presentation-kit/css/components.css">
+</head>
+<body>
+  <div class="deck__progress"></div>
+
+  <div class="deck">
+    <div class="deck__viewport">
+      <div class="deck__slides">
+
+        <!-- Capa -->
+        <section class="slide slide--cover is-active">
+          <div class="slide__grafismo" aria-hidden="true"></div>
+          <div class="slide__cover-content">
+            <span class="slide__public-label">Informação Pública</span>
+            <h1 class="slide__title">Presença nacional — mapa interativo</h1>
+            <p class="slide__subtitle">Teste de validação · Dados fictícios por estado</p>
+          </div>
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+        <!-- Intro -->
+        <section class="slide slide--content-text" data-chapter-theme="aqua">
+          <aside class="slide__band"></aside>
+          <div class="slide__body">
+            <h2 class="slide__title">Objetivo do teste</h2>
+            <div class="slide__content">
+              <p class="reveal-item">Validar mapa do Brasil interativo por UF, conforme layout de mapas do template PPT Vale.</p>
+              <ul style="margin-top:1.25rem">
+                <li class="reveal-item" style="margin-bottom:0.65rem">• Clique em um estado para ver detalhes</li>
+                <li class="reveal-item" style="margin-bottom:0.65rem">• Cores indicam intensidade de presença operacional (fictícia)</li>
+                <li class="reveal-item">• Painel lateral com legenda e informações complementares</li>
+              </ul>
+            </div>
+          </div>
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+        <!-- Capítulo -->
+        <section class="slide slide--chapter">
+          <div class="slide__chapter-grafismo" aria-hidden="true"><img src="" alt=""></div>
+          <div class="slide__chapter-inner">
+            <div class="slide__chapter-number">1</div>
+            <h2 class="slide__title">Operações por estado</h2>
+          </div>
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+        <!-- Mapa interativo -->
+        <section class="slide slide--map" data-chapter="1" data-chapter-theme="aqua"
+                 data-map-data="data/estados.json" data-map-default-uf="MG">
+          <aside class="slide__band"></aside>
+          <header class="slide__chapter-label">
+            <span class="slide__chapter-number">1</span>
+            <span class="slide__chapter-title">Operações por estado</span>
+          </header>
+          <div class="slide__body">
+            <h2 class="slide__title">Mapa de presença operacional no Brasil</h2>
+            <p class="map-brazil__hint" data-map-field="hint">Clique em um estado para ver os detalhes</p>
+
+            <div class="map-brazil">
+              <div class="map-brazil__canvas-wrap">
+                <div id="map-brazil-canvas" class="map-brazil__canvas"></div>
+              </div>
+
+              <div class="map-brazil__side">
+                <div class="map-brazil__detail is-visible">
+                  <p class="map-brazil__detail-title">Estado selecionado</p>
+                  <p class="map-brazil__detail-uf" data-map-field="uf">MG</p>
+                  <p class="map-brazil__detail-nome" data-map-field="nome">Minas Gerais</p>
+                  <div class="map-brazil__detail-grid">
+                    <div class="map-brazil__detail-item">
+                      <label>Região</label>
+                      <span data-map-field="regiao">Sudeste</span>
+                    </div>
+                    <div class="map-brazil__detail-item">
+                      <label>Empregados</label>
+                      <span data-map-field="empregados">—</span>
+                    </div>
+                    <div class="map-brazil__detail-item" style="grid-column: 1 / -1">
+                      <label>Operações</label>
+                      <span data-map-field="operacoes">—</span>
+                    </div>
+                    <div class="map-brazil__detail-item" style="grid-column: 1 / -1">
+                      <label>Produção</label>
+                      <span data-map-field="producao">—</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="map-brazil__legend">
+                  <p class="map-brazil__legend-title">Legenda — presença operacional</p>
+                  <div class="map-brazil__legend-items">
+                    <div class="map-brazil__legend-item">
+                      <span class="map-brazil__legend-swatch" style="background:#E6E7E8"></span>
+                      Presença indireta / escritório
+                    </div>
+                    <div class="map-brazil__legend-item">
+                      <span class="map-brazil__legend-swatch" style="background:#9DE4D6"></span>
+                      Operação de apoio
+                    </div>
+                    <div class="map-brazil__legend-item">
+                      <span class="map-brazil__legend-swatch" style="background:#0ABB98"></span>
+                      Operação regional
+                    </div>
+                    <div class="map-brazil__legend-item">
+                      <span class="map-brazil__legend-swatch" style="background:#007E7A"></span>
+                      Hub estratégico
+                    </div>
+                    <div class="map-brazil__legend-item">
+                      <span class="map-brazil__legend-swatch" style="background:#034944"></span>
+                      Complexo industrial / mina
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <footer class="map-brazil__footnote">Fonte: dados fictícios para validação · Julho/2026</footer>
+          </div>
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+        <!-- Mapa por região (visão resumo) -->
+        <section class="slide slide--content-split" data-chapter="1" data-chapter-theme="aqua">
+          <aside class="slide__band"></aside>
+          <header class="slide__chapter-label">
+            <span class="slide__chapter-number">1</span>
+            <span class="slide__chapter-title">Operações por estado</span>
+          </header>
+          <div class="slide__body">
+            <h2 class="slide__title">Resumo por região</h2>
+            <div class="slide__content" style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:8px">
+              <ul>
+                <li class="reveal-item"><span class="text-bold">Norte:</span> PA, AP, AM — mineração e logística</li>
+                <li class="reveal-item"><span class="text-bold">Nordeste:</span> MA, BA — corredor e porto</li>
+                <li class="reveal-item"><span class="text-bold">Sudeste:</span> MG, ES, RJ, SP — núcleo operacional</li>
+              </ul>
+              <ul>
+                <li class="reveal-item"><span class="text-bold">Sul:</span> RS, PR — portos e carvão</li>
+                <li class="reveal-item"><span class="text-bold">Centro-Oeste:</span> MT, MS — integração ferroviária</li>
+                <li class="reveal-item"><span class="text-bold">DF:</span> sede administrativa</li>
+              </ul>
+            </div>
+          </div>
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+        <!-- Encerramento -->
+        <section class="slide slide--closing" data-chapter-theme="aqua">
+          <aside class="slide__band"></aside>
+          <div class="slide__body" style="justify-content:center">
+            <h2 class="slide__title">Mapa validado</h2>
+            <p class="slide__content text-muted">Substitua os dados em <code style="font-size:0.9em">data/estados.json</code> pelos valores reais.</p>
+          </div>
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <nav class="deck__nav" aria-label="Navegação da apresentação">
+    <button type="button" class="deck__nav-btn" data-action="prev" aria-label="Slide anterior">←</button>
+    <span class="deck__counter">1 / 6</span>
+    <button type="button" class="deck__nav-btn" data-action="next" aria-label="Próximo slide">→</button>
+  </nav>
+
+  <script src="data/estados-config.js"></script>
+  <script type="module" src="../../presentation-kit/js/deck.js"></script>
+</body>
+</html>

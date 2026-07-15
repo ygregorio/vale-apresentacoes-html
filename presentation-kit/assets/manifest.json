@@ -1,0 +1,156 @@
+{
+  "sourceRoot": "C:\\Users\\81038569\\Projects\\vale-apresentacoes-html\\presentation-kit\\brand-assets",
+  "relativeRoot": "../brand-assets",
+  "fonts": {
+    "regular": "../assets/fonts/ValeSans-Regular.woff2",
+    "bold": "../assets/fonts/ValeSans-Bold.woff2"
+  },
+  "logo": {
+    "color": "../assets/logo/vale-logo-color.png",
+    "white": "../assets/logo/vale-logo-white.png"
+  },
+  "icons": {
+    "basePath": "icones/PNG",
+    "pattern": "Icones-Vale_VERDE AMARELO_GREEN YELLOW-{slug}.png",
+    "count": 30,
+    "slugs": [
+      "aperto-mao",
+      "bota",
+      "capacete",
+      "casa",
+      "centificado",
+      "co2",
+      "envelope",
+      "familia",
+      "floresta",
+      "grupo-pessoas",
+      "homem",
+      "lista",
+      "localizacao",
+      "locomotiva",
+      "luva",
+      "megafone",
+      "mensagem",
+      "mina",
+      "mulher",
+      "mundo",
+      "navio-01",
+      "navio-02",
+      "objetivo",
+      "oculos",
+      "protecao",
+      "protetor-auricular",
+      "raio",
+      "reciclavel",
+      "resultados",
+      "sino"
+    ],
+    "totalSlugs": 30
+  },
+  "grafismos": {
+    "rede": {
+      "basePath": "Grafismos_Graphics/rede_grid",
+      "files": [
+        "REDE_GRID Vale RPB01.png",
+        "REDE_GRID Vale RPB02.png",
+        "REDE_GRID Vale RPB03.png",
+        "REDE_GRID Vale RPB04.png",
+        "REDE_GRID Vale RPB05.png",
+        "REDE_GRID Vale RPB06.png",
+        "REDE_GRID Vale RPB07.png",
+        "REDE_GRID Vale RPB08.png",
+        "REDE_GRID Vale RPB09.png",
+        "REDE_GRID Vale RPB10.png",
+        "REDE_GRID Vale RPB11.png",
+        "REDE_GRID Vale RPB12.png",
+        "REDE_GRID Vale RPB13.png",
+        "REDE_GRID Vale RPB14.png",
+        "REDE_GRID Vale RPB15.png",
+        "REDE_GRID Vale RPB16.png",
+        "REDE_GRID Vale RPB17.png",
+        "REDE_GRID Vale RPB18.png",
+        "REDE_GRID Vale RPB19.png",
+        "REDE_GRID Vale RPB20.png",
+        "REDE_GRID Vale RPB21.png",
+        "REDE_GRID Vale RPB22.png",
+        "REDE_GRID Vale RPB23.png",
+        "REDE_GRID Vale RPB24.png",
+        "REDE_GRID Vale RPB25.png",
+        "REDE_GRID Vale RPB26.png",
+        "REDE_GRID Vale RPB27.png",
+        "REDE_GRID Vale RPB28.png",
+        "REDE_GRID Vale RPB29.png",
+        "REDE_GRID Vale RPB30.png",
+        "REDE_GRID Vale RPB31.png",
+        "REDE_GRID Vale RPB32.png",
+        "REDE_GRID Vale RPB33.png",
+        "REDE_GRID Vale RPB34.png",
+        "REDE_GRID Vale RPB35.png",
+        "REDE_GRID Vale RPB36.png",
+        "REDE_GRID Vale RPB37.png",
+        "REDE_GRID Vale RPB38.png",
+        "REDE_GRID Vale RPB39.png",
+        "REDE_GRID Vale RPB40.png",
+        "REDE_GRID Vale RPB41.png",
+        "REDE_GRID Vale RPB42.png",
+        "REDE_GRID Vale RPB43.png",
+        "REDE_GRID Vale RPB44.png",
+        "REDE_GRID Vale RPB45.png",
+        "REDE_GRID Vale RPB46.png",
+        "REDE_GRID Vale RPB47.png",
+        "REDE_GRID Vale RPB48.png",
+        "REDE_GRID Vale RPB49.png",
+        "REDE_GRID Vale RPB50.png",
+        "REDE_GRID Vale RPB51.png",
+        "REDE_GRID Vale RPB52.png",
+        "REDE_GRID Vale RPB53.png",
+        "REDE_GRID Vale RPB54.png"
+      ],
+      "referencePdf": "Grafismos_Graphics/rede_grid/REDE_GRID Vale RPB.pdf"
+    },
+    "redeOutline": {
+      "amarelo": "Grafismos_Graphics/Outline/BOX CABECALHO_Header box_Outline/faixa Amarela_range yellow_Outline/BOX CABECALHO faixa Amarela_Header box range yellow RGB_Outline1.png",
+      "aqua": "Grafismos_Graphics/Outline/BOX CABECALHO_Header box_Outline/faixa Aqua_range aqua_Outline/BOX CABECALHO faixa Aqua_Header box range aqua RGB_Outline1.png",
+      "azul": "Grafismos_Graphics/Outline/BOX CABECALHO_Header box_Outline/faixa Azul_range blue_Outline/BOX CABECALHO faixa Azul_Header box range blue RGB_Outline1.png",
+      "cereja": "Grafismos_Graphics/Outline/BOX CABECALHO_Header box_Outline/faixa Cereja_range cherry_Outline/BOX CABECALHO faixa Cereja_Header box range cherry RGB_Outline1.png",
+      "verde": "Grafismos_Graphics/Outline/BOX CABECALHO_Header box_Outline/faixa Verde Vale_range green_Outline/BOX CABECALHO faixa Verde Vale_Header box range green RGB_Outline1.png"
+    },
+    "faixaLateral": {
+      "amarelo": "Grafismos_Graphics/Box_flutuando/faixa Amarelo_range yellow/Box Flutuante com faixa_FLOATING BOX with range yellow RGB1.png",
+      "aqua": "Grafismos_Graphics/Box_flutuando/faixa Aqua_range aqua/Box Flutuante com faixa_FLOATING BOX with range aqua RGB1.png",
+      "azul": "Grafismos_Graphics/Box_flutuando/faixa Azul_range Blue/Box Flutuante com faixa_FLOATING BOX with range Blue RGB1.png",
+      "cereja": "Grafismos_Graphics/Box_flutuando/faixa Cereja_range Cherry/Box Flutuante com faixa Cereja_Box Flutuante Vale com faixa_FLOATING BOX with range cherry RGB1.png",
+      "verde": "Grafismos_Graphics/Box_flutuando/faixa Verde_range green/Box Flutuante com faixa_FLOATING BOX with range green RGB1.png"
+    }
+  },
+  "illustrations": {
+    "animais_animals": {
+      "count": 3,
+      "sample": "Ilustracoes/animais_animals/pdf/Animais.pdf"
+    },
+    "Capacete_Helmets": {
+      "count": 1,
+      "sample": "Ilustracoes/Capacete_Helmets/Capacete_Helmets.pdf"
+    },
+    "Logistica_Logistic": {
+      "count": 1,
+      "sample": "Ilustracoes/Logistica_Logistic/Logistica_Logistic.pdf"
+    },
+    "Lugares_Places": {
+      "count": 2,
+      "sample": "Ilustracoes/Lugares_Places/Lugares_Places/Lugares_Places.pdf"
+    },
+    "Objetos_Objects": {
+      "count": 3,
+      "sample": "Ilustracoes/Objetos_Objects/Cartas_Cards/Cartas_Cards.pdf"
+    },
+    "Pessoas_Persons": {
+      "count": 11,
+      "sample": "Ilustracoes/Pessoas_Persons/Cabec╠ºas diversas_ head/Cabec╠ºas diversas_ head.pdf"
+    },
+    "Veiculos_ vehicles": {
+      "count": 5,
+      "sample": "Ilustracoes/Veiculos_ vehicles/Caminhoes_Trucks/Caminhoes_Trucks.pdf"
+    }
+  }
+}

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="verde-aqua">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capa com Ilustrações — Vale (teste)</title>
+  <link rel="stylesheet" href="../../presentation-kit/css/tokens.css">
+  <link rel="stylesheet" href="../../presentation-kit/css/base.css">
+  <link rel="stylesheet" href="../../presentation-kit/css/slides.css">
+  <link rel="stylesheet" href="../../presentation-kit/css/components.css">
+</head>
+<body>
+  <div class="deck__progress"></div>
+
+  <div class="deck">
+    <div class="deck__viewport">
+      <div class="deck__slides">
+
+        <!-- Capa animada com ilustrações -->
+        <section class="slide slide--cover slide--cover-illustration is-active">
+          <div class="slide__grafismo" aria-hidden="true">
+            <div class="cover-scene cover-scene--play">
+              <span class="cover-scene__glow cover-scene__glow--a"></span>
+              <span class="cover-scene__glow cover-scene__glow--b"></span>
+
+              <img class="cover-scene__layer cover-scene__env" alt=""
+                   src="../../presentation-kit/brand-assets/Ilustracoes/Pessoas_Persons/Pessoas em ambientes_People in environments/png/LugaresComunidades_PlacesCommunities_Reserva Natural.png">
+
+              <img class="cover-scene__layer cover-scene__mine" alt=""
+                   src="../../presentation-kit/brand-assets/Ilustracoes/Lugares_Places/Lugares_Places/png/Mina_Mine-02.png">
+
+              <img class="cover-scene__layer cover-scene__people cover-scene__people--main" alt=""
+                   src="../../presentation-kit/brand-assets/Ilustracoes/Pessoas_Persons/Pessoas em ambientes_People in environments/png/Pessoas em ambientes_People in environments-01.png">
+
+              <img class="cover-scene__layer cover-scene__people cover-scene__people--alt cover-scene__people--alt-a" alt=""
+                   src="../../presentation-kit/brand-assets/Ilustracoes/Pessoas_Persons/Pessoas em ambientes_People in environments/png/Pessoas em ambientes_People in environments-02.png">
+
+              <img class="cover-scene__layer cover-scene__people cover-scene__people--alt cover-scene__people--alt-b" alt=""
+                   src="../../presentation-kit/brand-assets/Ilustracoes/Pessoas_Persons/Pessoas trabalhando_People working/png/Pessoas trabalhando_People working_Together.png">
+            </div>
+          </div>
+
+          <div class="slide__cover-content">
+            <span class="slide__public-label">Informação Pública</span>
+            <h1 class="slide__title">Pessoas e territórios em transformação</h1>
+            <p class="slide__subtitle">Teste de capa animada · Ilustrações oficiais Vale</p>
+          </div>
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+        <!-- Objetivo do teste -->
+        <section class="slide slide--content-text" data-chapter-theme="aqua">
+          <aside class="slide__band"></aside>
+          <div class="slide__body">
+            <h2 class="slide__title">O que este teste valida</h2>
+            <div class="slide__content">
+              <ul>
+                <li class="reveal-item">Capa com ilustrações oficiais de <strong>pessoas</strong> e <strong>ambientes</strong></li>
+                <li class="reveal-item">Entrada em camadas: reserva natural → mina → personagens</li>
+                <li class="reveal-item">Flutuação suave contínua após a abertura</li>
+                <li class="reveal-item">Respeita <code>prefers-reduced-motion</code> do sistema</li>
+              </ul>
+              <p class="reveal-item" style="margin-top:1rem">Volte ao slide 1 (Home) para rever a animação de abertura.</p>
+            </div>
+          </div>
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+        <!-- Capa padrão (comparação) -->
+        <section class="slide slide--cover">
+          <div class="slide__grafismo" aria-hidden="true"></div>
+          <div class="slide__cover-content">
+            <span class="slide__public-label">Informação Pública</span>
+            <h1 class="slide__title">Capa padrão — grafismo Rede</h1>
+            <p class="slide__subtitle">Referência para comparar com a versão ilustrada</p>
+          </div>
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+        <!-- Encerramento -->
+        <section class="slide slide--closing" data-chapter-theme="aqua">
+          <aside class="slide__band"></aside>
+          <div class="slide__body" style="justify-content:center">
+            <h2 class="slide__title">Capa validada</h2>
+            <p class="slide__content text-muted">Use a classe <code>slide--cover-illustration</code> e o bloco <code>.cover-scene</code> para replicar.</p>
+          </div>
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <nav class="deck__nav" aria-label="Navegação da apresentação">
+    <button type="button" class="deck__nav-btn" data-action="prev" aria-label="Slide anterior">←</button>
+    <span class="deck__counter">1 / 4</span>
+    <button type="button" class="deck__nav-btn" data-action="next" aria-label="Próximo slide">→</button>
+  </nav>
+
+  <script type="module" src="../../presentation-kit/js/deck.js"></script>
+</body>
+</html>

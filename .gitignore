@@ -1,0 +1,14 @@
+# Junction para biblioteca de marca (caminho local do usuário)
+presentation-kit/brand-assets/
+
+# Arquivos temporários
+presentation-kit/assets/_list.txt
+presentation-kit/assets/catalog.json
+
+# Python
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+Thumbs.db

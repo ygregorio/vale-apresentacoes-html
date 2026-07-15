@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="verde-aqua">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Indicadores de Transportes — Backoffice</title>
+  <link rel="stylesheet" href="../../presentation-kit/css/tokens.css">
+  <link rel="stylesheet" href="../../presentation-kit/css/base.css">
+  <link rel="stylesheet" href="../../presentation-kit/css/slides.css">
+  <link rel="stylesheet" href="../../presentation-kit/css/components.css">
+  <link rel="stylesheet" href="../../presentation-kit/css/indicators-transport.css">
+</head>
+<body>
+  <div class="deck__progress"></div>
+
+  <div class="deck">
+    <div class="deck__viewport">
+      <div class="deck__slides">
+
+        <section class="slide slide--cover slide--indicators-cover is-active">
+          <div class="slide__grafismo" aria-hidden="true"></div>
+          <div class="slide__cover-content">
+            <span class="slide__public-label">Informação Interna</span>
+            <h1 class="slide__title">Indicadores de Transportes</h1>
+            <p class="slide__subtitle">SO Norte · Referência mai/26</p>
+          </div>
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+        <!-- Slide 2: Consolidado diretoria -->
+        <section class="slide slide--indicators slide--indicators-overview">
+          <header class="indicators-topbar">
+            <div class="indicators-topbar__main">
+              <h1 class="indicators-topbar__title">Transportes – SO Norte</h1>
+              <p class="indicators-topbar__subtitle">Consolidado · mai/26</p>
+            </div>
+          </header>
+
+          <div class="indicators-overview__body">
+            <div class="indicators-overview__charts">
+              <article class="indicator-panel" data-indicator-chart data-indicator="ovbk" data-scope="consolidado">
+                <div class="indicator-panel__head">
+                  <h2 class="indicator-panel__title">OVBK – Taxa de overbook do transporte coletivo</h2>
+                </div>
+                <div class="indicator-panel__chart-wrap">
+                  <label class="indicator-panel__label-toggle">
+                    <input type="checkbox" checked data-panel-label-toggle>
+                    Rótulos
+                  </label>
+                  <div class="indicator-panel__chart">
+                    <canvas role="img" aria-label="Gráfico OVBK consolidado"></canvas>
+                  </div>
+                </div>
+                <p class="indicator-panel__meta">Meta: 1.577 <span class="meta-trend--up">▲</span></p>
+              </article>
+
+              <article class="indicator-panel" data-indicator-chart data-indicator="ptl" data-scope="consolidado">
+                <div class="indicator-panel__head">
+                  <h2 class="indicator-panel__title">PTL – Taxa de pontualidade do transporte coletivo</h2>
+                </div>
+                <div class="indicator-panel__chart-wrap">
+                  <label class="indicator-panel__label-toggle">
+                    <input type="checkbox" checked data-panel-label-toggle>
+                    Rótulos
+                  </label>
+                  <div class="indicator-panel__chart">
+                    <canvas role="img" aria-label="Gráfico PTL consolidado"></canvas>
+                  </div>
+                </div>
+                <p class="indicator-panel__meta">Meta: 96,60% <span class="meta-trend--up">▲</span></p>
+              </article>
+            </div>
+
+            <aside class="indicators-analysis">
+              <h3 class="indicators-analysis__title">PRINCIPAIS ANÁLISES</h3>
+
+              <article class="indicators-analysis__card">
+                <div class="indicators-analysis__card-head">
+                  <strong>OVBK – Overbook</strong>
+                  <span class="indicators-status indicators-status--below">Indicador abaixo da referência</span>
+                </div>
+                <div class="indicators-analysis__text">
+                  <p>▼ Novas contratações de colaboradores representam o maior ofensor do indicador. Novos coletivos foram mobilizados em Serra no dia 04/05, o que indica a tendência de melhoria do indicador para o indicador de maio/2026.</p>
+                </div>
+              </article>
+
+              <article class="indicators-analysis__card">
+                <div class="indicators-analysis__card-head">
+                  <strong>PTL – Pontualidade</strong>
+                  <span class="indicators-status indicators-status--below">Indicador abaixo da referência</span>
+                </div>
+                <div class="indicators-analysis__text">
+                  <p>▼ Trânsito externo foi apontado como fator determinante da não aderência a pontualidade, motivado principalmente por obras nas vias com pare e siga em Serra Norte/Serra Leste ( e na região metropolitana de São Luis (37 atrasos).</p>
+                </div>
+              </article>
+            </aside>
+          </div>
+
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+        <!-- Slide 3: PTL por gerência -->
+        <section class="slide slide--indicators slide--indicators-detail">
+          <header class="indicators-topbar">
+            <div class="indicators-topbar__main">
+              <h1 class="indicators-topbar__title">Coletivo – Pontualidade</h1>
+              <p class="indicators-topbar__subtitle">PTL aberto por gerência</p>
+            </div>
+          </header>
+
+          <div class="indicators-detail__body">
+            <div class="indicators-detail__stack">
+              <div class="indicators-detail__row" data-gerencia-row>
+                <article class="indicator-panel" data-indicator-chart data-indicator="ptl" data-scope="gerencia" data-gerencia="carajas">
+                  <div class="indicator-panel__head">
+                    <h2 class="indicator-panel__title">Carajás</h2>
+                  </div>
+                  <div class="indicator-panel__chart-wrap">
+                    <label class="indicator-panel__label-toggle">
+                      <input type="checkbox" checked data-panel-label-toggle>
+                      Rótulos
+                    </label>
+                    <div class="indicator-panel__chart">
+                      <canvas role="img" aria-label="PTL Carajás"></canvas>
+                    </div>
+                  </div>
+                </article>
+                <aside class="indicators-gerencia-analysis" data-analysis-slot aria-label="Análise Carajás"></aside>
+              </div>
+
+              <div class="indicators-detail__row" data-gerencia-row>
+                <article class="indicator-panel" data-indicator-chart data-indicator="ptl" data-scope="gerencia" data-gerencia="saoluis">
+                  <div class="indicator-panel__head">
+                    <h2 class="indicator-panel__title">São Luis e EFC</h2>
+                  </div>
+                  <div class="indicator-panel__chart-wrap">
+                    <label class="indicator-panel__label-toggle">
+                      <input type="checkbox" checked data-panel-label-toggle>
+                      Rótulos
+                    </label>
+                    <div class="indicator-panel__chart">
+                      <canvas role="img" aria-label="PTL São Luis e EFC"></canvas>
+                    </div>
+                  </div>
+                </article>
+                <aside class="indicators-gerencia-analysis" data-analysis-slot aria-label="Análise São Luis e EFC"></aside>
+              </div>
+
+              <div class="indicators-detail__row" data-gerencia-row>
+                <article class="indicator-panel" data-indicator-chart data-indicator="ptl" data-scope="gerencia" data-gerencia="serrasul">
+                  <div class="indicator-panel__head">
+                    <h2 class="indicator-panel__title">Serra Sul</h2>
+                  </div>
+                  <div class="indicator-panel__chart-wrap">
+                    <label class="indicator-panel__label-toggle">
+                      <input type="checkbox" checked data-panel-label-toggle>
+                      Rótulos
+                    </label>
+                    <div class="indicator-panel__chart">
+                      <canvas role="img" aria-label="PTL Serra Sul"></canvas>
+                    </div>
+                  </div>
+                </article>
+                <aside class="indicators-gerencia-analysis" data-analysis-slot aria-label="Análise Serra Sul"></aside>
+              </div>
+            </div>
+
+            <footer class="indicators-detail__footer">Meta: 96,60% <span class="meta-trend--up">▲</span></footer>
+          </div>
+
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+        <!-- Slide 4: OVBK por gerência -->
+        <section class="slide slide--indicators slide--indicators-detail">
+          <header class="indicators-topbar">
+            <div class="indicators-topbar__main">
+              <h1 class="indicators-topbar__title">Coletivo – Overbook</h1>
+              <p class="indicators-topbar__subtitle">OVBK aberto por gerência</p>
+            </div>
+          </header>
+
+          <div class="indicators-detail__body">
+            <div class="indicators-detail__stack">
+              <div class="indicators-detail__row" data-gerencia-row>
+                <article class="indicator-panel" data-indicator-chart data-indicator="ovbk" data-scope="gerencia" data-gerencia="carajas">
+                  <div class="indicator-panel__head">
+                    <h2 class="indicator-panel__title">Carajás</h2>
+                  </div>
+                  <div class="indicator-panel__chart-wrap">
+                    <label class="indicator-panel__label-toggle">
+                      <input type="checkbox" checked data-panel-label-toggle>
+                      Rótulos
+                    </label>
+                    <div class="indicator-panel__chart">
+                      <canvas role="img" aria-label="OVBK Carajás"></canvas>
+                    </div>
+                  </div>
+                </article>
+                <aside class="indicators-gerencia-analysis" data-analysis-slot aria-label="Análise Carajás"></aside>
+              </div>
+
+              <div class="indicators-detail__row" data-gerencia-row>
+                <article class="indicator-panel" data-indicator-chart data-indicator="ovbk" data-scope="gerencia" data-gerencia="saoluis">
+                  <div class="indicator-panel__head">
+                    <h2 class="indicator-panel__title">São Luis e EFC</h2>
+                  </div>
+                  <div class="indicator-panel__chart-wrap">
+                    <label class="indicator-panel__label-toggle">
+                      <input type="checkbox" checked data-panel-label-toggle>
+                      Rótulos
+                    </label>
+                    <div class="indicator-panel__chart">
+                      <canvas role="img" aria-label="OVBK São Luis e EFC"></canvas>
+                    </div>
+                  </div>
+                </article>
+                <aside class="indicators-gerencia-analysis" data-analysis-slot aria-label="Análise São Luis e EFC"></aside>
+              </div>
+
+              <div class="indicators-detail__row" data-gerencia-row>
+                <article class="indicator-panel" data-indicator-chart data-indicator="ovbk" data-scope="gerencia" data-gerencia="serrasul">
+                  <div class="indicator-panel__head">
+                    <h2 class="indicator-panel__title">Serra Sul</h2>
+                  </div>
+                  <div class="indicator-panel__chart-wrap">
+                    <label class="indicator-panel__label-toggle">
+                      <input type="checkbox" checked data-panel-label-toggle>
+                      Rótulos
+                    </label>
+                    <div class="indicator-panel__chart">
+                      <canvas role="img" aria-label="OVBK Serra Sul"></canvas>
+                    </div>
+                  </div>
+                </article>
+                <aside class="indicators-gerencia-analysis" data-analysis-slot aria-label="Análise Serra Sul"></aside>
+              </div>
+            </div>
+
+            <footer class="indicators-detail__footer">Meta: 1.577 <span class="meta-trend--up">▲</span></footer>
+          </div>
+
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+        <section class="slide slide--content-text" data-chapter-theme="aqua">
+          <aside class="slide__band"></aside>
+          <div class="slide__body">
+            <h2 class="slide__title">Próximo passo</h2>
+            <div class="slide__content">
+              <p class="reveal-item">Este é um <strong>teste de layout</strong> com os números do PDF de mai/26.</p>
+              <p class="reveal-item" style="margin-top:0.75rem">Modelo de planilha sugerido em <code>templates/indicadores-transportes-planilha-modelo.md</code>.</p>
+              <p class="reveal-item" style="margin-top:0.75rem">Depois da validação visual, podemos criar a página de preenchimento (backoffice) para gerar o HTML automaticamente.</p>
+            </div>
+          </div>
+          <img class="slide__logo" src="../../presentation-kit/assets/logo/vale-logo-color.png" alt="Vale">
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <nav class="deck__nav" aria-label="Navegação da apresentação">
+    <button type="button" class="deck__nav-btn" data-action="prev" aria-label="Slide anterior">←</button>
+    <span class="deck__counter">1 / 5</span>
+    <button type="button" class="deck__nav-btn" data-action="next" aria-label="Próximo slide">→</button>
+  </nav>
+
+  <script src="data/indicators-data.js"></script>
+  <script type="module" src="../../presentation-kit/js/deck.js"></script>
+</body>
+</html>

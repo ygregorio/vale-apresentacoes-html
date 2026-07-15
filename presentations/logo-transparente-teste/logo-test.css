@@ -1,0 +1,194 @@
+/* Teste visual — logo Vale com fundo transparente */
+
+.logo-test__intro {
+  max-width: 52rem;
+}
+
+.logo-test__intro code {
+  font-size: 0.92em;
+}
+
+.logo-test__checker {
+  position: absolute;
+  inset: 0;
+  background-color: #fff;
+  background-image:
+    linear-gradient(45deg, #d8d8d8 25%, transparent 25%),
+    linear-gradient(-45deg, #d8d8d8 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #d8d8d8 75%),
+    linear-gradient(-45deg, transparent 75%, #d8d8d8 75%);
+  background-size: 32px 32px;
+  background-position: 0 0, 0 16px, 16px -16px, -16px 0;
+  z-index: 0;
+}
+
+.slide--logo-test .slide__body {
+  position: relative;
+  z-index: 1;
+}
+
+.logo-test__panel-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.logo-test__panel-grid--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.logo-test__panel {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-test__panel-label {
+  padding: 0.55rem 0.85rem;
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--vale-cinza-escuro);
+}
+
+.logo-test__panel-stage {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+}
+
+.logo-test__panel-stage img {
+  width: 140px;
+  height: auto;
+  object-fit: contain;
+}
+
+.logo-test__panel-stage--pos {
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 1.25rem 1.5rem;
+}
+
+.logo-test__panel-stage--pos img {
+  width: var(--logo-width);
+}
+
+.logo-test__bg--white { background: #fff; }
+.logo-test__bg--verde { background: var(--vale-verde); }
+.logo-test__bg--verde-escuro { background: var(--vale-verde-escuro); }
+.logo-test__bg--aqua { background: var(--vale-aqua); }
+.logo-test__bg--azul { background: var(--vale-azul); }
+.logo-test__bg--amarelo { background: var(--vale-amarelo); }
+.logo-test__bg--cereja { background: var(--vale-cereja); }
+.logo-test__bg--cinza { background: var(--vale-cinza-claro); }
+.logo-test__bg--gradient {
+  background: linear-gradient(135deg, var(--vale-verde) 0%, var(--vale-aqua) 45%, var(--vale-azul) 100%);
+}
+
+.logo-test__compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 0.75rem;
+}
+
+.logo-test__compare-col {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.logo-test__compare-head {
+  padding: 0.6rem 1rem;
+  font-size: var(--font-size-small);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.logo-test__compare-head--jpg {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.logo-test__compare-head--png {
+  background: #d4edda;
+  color: #155724;
+}
+
+.logo-test__compare-body {
+  position: relative;
+  min-height: 280px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 2rem 2.25rem;
+}
+
+.logo-test__compare-body img {
+  width: 160px;
+  height: auto;
+}
+
+.logo-test__legend {
+  margin-top: 1rem;
+  font-size: var(--font-size-small);
+  color: var(--vale-cinza-vale);
+}
+
+.logo-test__themes {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.logo-test__theme-tile {
+  border-radius: 10px;
+  overflow: hidden;
+  min-height: 150px;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 1rem;
+}
+
+.logo-test__theme-tile span {
+  position: absolute;
+  top: 0.65rem;
+  left: 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.logo-test__theme-tile img {
+  width: 88px;
+  height: auto;
+}
+
+.logo-test__theme-tile--amarelo span {
+  color: rgba(0, 0, 0, 0.65);
+  text-shadow: none;
+}
+
+.slide--logo-test-cover .slide__cover-content {
+  position: relative;
+  z-index: 2;
+}
+
+.slide--logo-test-cover .logo-test__checker {
+  opacity: 0.35;
+  mix-blend-mode: overlay;
+}
