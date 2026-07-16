@@ -219,6 +219,11 @@ function barLabelsBandTopY(chart, dataIndex, compact) {
   const badgeH = labelBadgeHeight(compact);
   let topY = tallestBarTopY(chart, dataIndex);
 
+  if (!barsAreImbalanced(chart, dataIndex)) {
+    topY -= badgeH + 6;
+    return topY;
+  }
+
   if (compact) {
     const secondary = secondaryBarElement(chart, dataIndex);
     if (secondary && barsAreImbalanced(chart, dataIndex)) {
@@ -265,7 +270,11 @@ function secondaryBarElement(chart, dataIndex) {
   return getBarElement(chart, barDatasets[1].index, dataIndex);
 }
 
-function buildPrimaryBarDataLabels(panel, compact, formatter) {
+function isPercentIndicator(indicatorId) {
+  return getIndicatorMeta(indicatorId)?.format === "percent";
+}
+
+function buildPrimaryBarDataLabels(panel, compact, formatter, indicatorId) {
   const badgeH = labelBadgeHeight(compact);
 
   return {
@@ -278,14 +287,22 @@ function buildPrimaryBarDataLabels(panel, compact, formatter) {
       return ctx.dataset.data[ctx.dataIndex] != null;
     },
     anchor(ctx) {
-      const bar = getBarElement(ctx.chart, ctx.datasetIndex, ctx.dataIndex);
-      return barTooShortForInside(bar, compact) ? "end" : "center";
+      const chart = ctx.chart;
+      const idx = ctx.dataIndex;
+      const bar = getBarElement(chart, ctx.datasetIndex, idx);
+      if (barTooShortForInside(bar, compact)) return "end";
+      if (!barsAreImbalanced(chart, idx)) return "end";
+      return "center";
     },
     align(ctx) {
       const chart = ctx.chart;
       const idx = ctx.dataIndex;
       const bar = getBarElement(chart, ctx.datasetIndex, idx);
       if (barTooShortForInside(bar, compact)) return "top";
+
+      if (!barsAreImbalanced(chart, idx)) {
+        return "top";
+      }
 
       if (barsAreImbalanced(chart, idx)) {
         return compact ? "bottom" : "top";
@@ -297,6 +314,10 @@ function buildPrimaryBarDataLabels(panel, compact, formatter) {
       const idx = ctx.dataIndex;
       const bar = getBarElement(chart, ctx.datasetIndex, idx);
       if (!bar?.height) return 4;
+
+      if (!barsAreImbalanced(chart, idx)) {
+        return safeBarLabelOffset(chart, bar, compact, BAR_ABOVE_MONTH_GAP + 2);
+      }
 
       if (barsAreImbalanced(chart, idx)) {
         const ratio = compact ? PRIMARY_LABEL_RATIO_IMBALANCED : 0.22;
@@ -311,7 +332,7 @@ function buildPrimaryBarDataLabels(panel, compact, formatter) {
   };
 }
 
-function buildSecondaryBarDataLabels(panel, compact, formatter) {
+function buildSecondaryBarDataLabels(panel, compact, formatter, indicatorId) {
   return {
     clip: false,
     ...dataLabelBadgeStyle(compact),
@@ -321,12 +342,32 @@ function buildSecondaryBarDataLabels(panel, compact, formatter) {
       if (!panelShowsLabels(panel)) return false;
       return ctx.dataset.data[ctx.dataIndex] != null;
     },
-    anchor: "end",
-    align: "top",
+    anchor(ctx) {
+      const chart = ctx.chart;
+      const idx = ctx.dataIndex;
+      if (!barsAreImbalanced(chart, idx)) {
+        return "center";
+      }
+      return "end";
+    },
+    align(ctx) {
+      const chart = ctx.chart;
+      const idx = ctx.dataIndex;
+      if (!barsAreImbalanced(chart, idx)) {
+        return "center";
+      }
+      return "top";
+    },
     offset(ctx) {
       const chart = ctx.chart;
-      const bar = getBarElement(chart, ctx.datasetIndex, ctx.dataIndex);
+      const idx = ctx.dataIndex;
+      const bar = getBarElement(chart, ctx.datasetIndex, idx);
       if (!bar?.height) return BAR_ABOVE_MONTH_GAP;
+
+      if (!barsAreImbalanced(chart, idx)) {
+        return 0;
+      }
+
       return safeBarLabelOffset(chart, bar, compact);
     },
   };
@@ -335,6 +376,9 @@ function buildSecondaryBarDataLabels(panel, compact, formatter) {
 function buildLineDataLabels(panel, panelData, compact, indicatorId) {
   const badge = dataLabelBadgeStyle(compact);
   const formatter = lineValueFormatter(indicatorId, compact);
+  const percentMode = isPercentIndicator(indicatorId);
+  const badgeH = labelBadgeHeight(compact);
+  const lineClearance = percentMode ? badgeH + 14 : LINE_ABOVE_BAR_GAP;
 
   return {
     anchor: "end",
@@ -356,18 +400,22 @@ function buildLineDataLabels(panel, panelData, compact, indicatorId) {
     offset(ctx) {
       const chart = ctx.chart;
       const idx = ctx.dataIndex;
-      const badgeH = labelBadgeHeight(compact);
       const linePointY = chart.scales.yRate.getPixelForValue(Number(ctx.dataset.data[idx]));
       const bandTopY = barLabelsBandTopY(chart, idx, compact);
-      const targetTopY = bandTopY - LINE_ABOVE_BAR_GAP - badgeH;
+      const targetTopY = bandTopY - lineClearance - badgeH;
       const chartTop = chart.chartArea?.top ?? 0;
       const safeTopY = Math.max(targetTopY, chartTop + 4);
+
+      if (percentMode) {
+        return Math.max(linePointY - safeTopY - badgeH, badgeH + 6);
+      }
+
       return Math.max(linePointY - safeTopY - badgeH, 8);
     },
   };
 }
 
-function buildBarDatasets(panel, panelData, compact) {
+function buildBarDatasets(panel, panelData, compact, indicatorId) {
   const {
     barPrimary,
     barSecondary,
@@ -388,7 +436,7 @@ function buildBarDatasets(panel, panelData, compact) {
       yAxisID: "yCount",
       order: 2,
       barThickness,
-      datalabels: buildPrimaryBarDataLabels(panel, compact, (v) => fmtNumber(v)),
+      datalabels: buildPrimaryBarDataLabels(panel, compact, (v) => fmtNumber(v), indicatorId),
     },
     {
       type: "bar",
@@ -400,7 +448,7 @@ function buildBarDatasets(panel, panelData, compact) {
       yAxisID: "yCount",
       order: 3,
       barThickness,
-      datalabels: buildSecondaryBarDataLabels(panel, compact, (v) => fmtNumber(v)),
+      datalabels: buildSecondaryBarDataLabels(panel, compact, (v) => fmtNumber(v), indicatorId),
     },
   ];
 }
@@ -409,7 +457,19 @@ function buildComboConfig(panel, panelData, compact = false, indicatorId = "") {
   const { line, lineLabel } = panelData;
   const fontSize = compact ? 10 : 11;
   const labelsOn = panelShowsLabels(panel);
+  const percentMode = isPercentIndicator(indicatorId);
   const bottomPad = labelsOn ? (compact ? 42 : 52) : compact ? 12 : 24;
+  const topPad = labelsOn
+    ? percentMode
+      ? compact
+        ? 58
+        : 68
+      : compact
+        ? 48
+        : 52
+    : compact
+      ? 12
+      : 24;
 
   const lineDataset = {
     type: "line",
@@ -430,7 +490,7 @@ function buildComboConfig(panel, panelData, compact = false, indicatorId = "") {
     type: "bar",
     data: {
       labels: panelData.labels,
-      datasets: [...buildBarDatasets(panel, panelData, compact), lineDataset],
+      datasets: [...buildBarDatasets(panel, panelData, compact, indicatorId), lineDataset],
     },
     options: {
       responsive: true,
@@ -438,7 +498,7 @@ function buildComboConfig(panel, panelData, compact = false, indicatorId = "") {
       animation: false,
       interaction: { mode: "index", intersect: false },
       layout: {
-        padding: { top: compact ? 48 : 52, right: 8, bottom: bottomPad, left: 8 },
+        padding: { top: topPad, right: 8, bottom: bottomPad, left: 8 },
       },
       datasets: {
         bar: {
