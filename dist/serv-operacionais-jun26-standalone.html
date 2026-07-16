@@ -6610,25 +6610,27 @@ function isPercentIndicator(indicatorId) {
   return getIndicatorMeta(indicatorId)?.format === "percent";
 }
 
-function percentLabelLayout(chart, compact) {
-  const badgeH = labelBadgeHeight(compact);
-  const plotTop = chart.chartArea?.top ?? 0;
-  const gapBeforePlot = 8;
-  const dimensionSecondaryTop = plotTop - gapBeforePlot - badgeH;
-  const dimensionPrimaryTop = dimensionSecondaryTop - badgeH - 4;
-  const lineTop = dimensionPrimaryTop - badgeH - 8;
-  return { badgeH, lineTop, dimensionPrimaryTop, dimensionSecondaryTop };
+function percentTopPadding(compact) {
+  return compact ? 10 : 14;
 }
 
-function percentTopPadding(compact) {
+function percentBottomPadding(compact) {
   const badgeH = labelBadgeHeight(compact);
-  return badgeH * 3 + 28;
+  return badgeH * 2 + monthLabelBandHeight(compact) + 28;
 }
 
 function percentChartCountMax(panelData) {
   const { barPrimary, barSecondary } = panelData;
   const dataMax = Math.max(...(barPrimary || []), ...(barSecondary || []), 0);
-  return dataMax * 1.1;
+  return dataMax * 1.14;
+}
+
+function tallestBarTopYBars(barPrimary, barSecondary) {
+  return Math.min(barPrimary.y, barSecondary.y);
+}
+
+function barBaseLineY(barPrimary, barSecondary) {
+  return Math.max(barPrimary.base, barSecondary.base);
 }
 
 function drawLabelBadge(ctx, text, centerX, topY, style, compact) {
@@ -6661,10 +6663,11 @@ function drawPercentComboLabels(chart, opts) {
   const { panel, compact, indicatorId, panelData } = opts;
   if (!panelShowsLabels(panel) || !chart.chartArea) return;
 
-  const layout = percentLabelLayout(chart, compact);
+  const badgeH = labelBadgeHeight(compact);
   const dimStyle = dataLabelBadgeStyle(compact);
   const lineFmt = lineValueFormatter(indicatorId, compact);
   const ctx = chart.ctx;
+  const gap = 6;
 
   const barMetas = chart.data.datasets
     .map((dataset, index) => ({ dataset, index }))
@@ -6691,20 +6694,35 @@ function drawPercentComboLabels(chart, opts) {
       backgroundColor: meets ? META_LABEL_GOOD.bg : META_LABEL_BAD.bg,
     };
 
-    drawLabelBadge(ctx, lineFmt(lineValue), linePoint.x, layout.lineTop, lineStyle, compact);
+    const barTop = tallestBarTopYBars(barPrimary, barSecondary);
+    const barBase = barBaseLineY(barPrimary, barSecondary);
+    const categoryCenterX = (barPrimary.x + barSecondary.x) / 2;
+
+    drawLabelBadge(
+      ctx,
+      lineFmt(lineValue),
+      categoryCenterX,
+      barTop - badgeH - gap,
+      lineStyle,
+      compact,
+    );
+
+    const dimPrimaryTop = barBase + gap;
+    const dimSecondaryTop = dimPrimaryTop + badgeH + 4;
+
     drawLabelBadge(
       ctx,
       fmtNumber(Number(panelData.barPrimary[i])),
-      linePoint.x,
-      layout.dimensionPrimaryTop,
+      barPrimary.x,
+      dimPrimaryTop,
       dimStyle,
       compact,
     );
     drawLabelBadge(
       ctx,
       fmtNumber(Number(panelData.barSecondary[i])),
-      linePoint.x,
-      layout.dimensionSecondaryTop,
+      barSecondary.x,
+      dimSecondaryTop,
       dimStyle,
       compact,
     );
@@ -6933,7 +6951,15 @@ function buildComboConfig(panel, panelData, compact = false, indicatorId = "") {
   const fontSize = compact ? 10 : 11;
   const labelsOn = panelShowsLabels(panel);
   const percentMode = isPercentIndicator(indicatorId);
-  const bottomPad = labelsOn ? (compact ? 42 : 52) : compact ? 12 : 24;
+  const bottomPad = labelsOn
+    ? percentMode
+      ? percentBottomPadding(compact)
+      : compact
+        ? 42
+        : 52
+    : compact
+      ? 12
+      : 24;
   const topPad = labelsOn
     ? percentMode
       ? percentTopPadding(compact)
@@ -7017,7 +7043,7 @@ function buildComboConfig(panel, panelData, compact = false, indicatorId = "") {
             font: { family: '"Vale Sans", sans-serif', size: fontSize },
             color: "#747678",
             maxRotation: 0,
-            padding: compact ? 8 : 16,
+            padding: labelsOn && percentMode ? (compact ? 14 : 20) : compact ? 8 : 16,
           },
           grid: { display: false },
         },
