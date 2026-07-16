@@ -55,8 +55,12 @@ function fmtRate(value, digits = 2) {
   return value.toFixed(d).replace(".", ",");
 }
 
+function fmtIndicatorLine(value) {
+  return new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 0 }).format(Math.round(value));
+}
+
 function fmtLineTaxa(value) {
-  if (value >= 100) return fmtNumber(value);
+  if (value >= 100) return fmtIndicatorLine(value);
   if (Number.isInteger(value)) return fmtNumber(value);
   return fmtRate(value);
 }
@@ -72,13 +76,70 @@ const META_LABEL_BAD = { bg: "#fde8ea", color: "#991310" };
 function lineLabelMeetsMeta(indicatorId, lineValue) {
   const meta = getIndicatorMeta(indicatorId);
   if (!meta) return true;
-  return lineValue >= meta.value;
+  const trend = meta.trend || "up";
+  if (meta.format === "percent") {
+    return lineValue >= meta.value;
+  }
+  if (trend === "up") {
+    return lineValue >= meta.value;
+  }
+  return lineValue <= meta.value;
+}
+
+function aggregateVp2Series(indicatorId, vp2Id) {
+  const indicator = window.VALE_INDICATORS?.indicators?.[indicatorId];
+  const cached = indicator?.vp2Series?.[vp2Id];
+  if (cached) {
+    return {
+      ...cached,
+      labels: window.VALE_INDICATORS.meta.meses,
+    };
+  }
+
+  const children = indicator?.gerencias?.filter((g) => g.parentId === vp2Id) ?? [];
+  if (!children.length) return null;
+
+  const len = children[0].series.barPrimary.length;
+  const barPrimary = [];
+  const barSecondary = [];
+  const line = [];
+  const meta = indicator.meta;
+
+  for (let i = 0; i < len; i += 1) {
+    let sumPrimary = 0;
+    let sumSecondary = 0;
+    for (const child of children) {
+      sumPrimary += child.series.barPrimary[i] ?? 0;
+      sumSecondary += child.series.barSecondary[i] ?? 0;
+    }
+    barPrimary.push(sumPrimary);
+    barSecondary.push(sumSecondary);
+    if (meta?.format === "percent") {
+      line.push(sumPrimary ? (sumSecondary / sumPrimary) * 100 : 0);
+    } else {
+      line.push(sumSecondary ? (sumPrimary / sumSecondary) * 100 : 0);
+    }
+  }
+
+  const first = children[0].series;
+  return {
+    barPrimaryLabel: first.barPrimaryLabel,
+    barSecondaryLabel: first.barSecondaryLabel,
+    lineLabel: first.lineLabel,
+    barPrimary,
+    barSecondary,
+    line,
+    labels: window.VALE_INDICATORS.meta.meses,
+  };
 }
 
 function lineValueFormatter(indicatorId, compact) {
   const meta = getIndicatorMeta(indicatorId);
   if (meta?.format === "percent") {
     return (v) => fmtPercent(v, compact ? 1 : 2);
+  }
+  if (meta?.format === "number") {
+    return (v) => fmtIndicatorLine(v);
   }
   return (v) => fmtLineTaxa(v);
 }
@@ -87,6 +148,9 @@ function lineValueTooltip(indicatorId, label, value) {
   const meta = getIndicatorMeta(indicatorId);
   if (meta?.format === "percent") {
     return `${label}: ${fmtPercent(value)}`;
+  }
+  if (meta?.format === "number") {
+    return `${label}: ${fmtIndicatorLine(value)}`;
   }
   return `${label}: ${fmtLineTaxa(value)}`;
 }
@@ -128,6 +192,8 @@ function barValuesAt(chart, dataIndex) {
 }
 
 const LINE_ABOVE_BAR_GAP = 10;
+const BAR_ABOVE_MONTH_GAP = 22;
+const BAR_LABEL_AXIS_CLEARANCE = 8;
 const BAR_ZONE_OFFSET_RATIO = 0.2;
 const PRIMARY_LABEL_RATIO_BALANCED = 0.12;
 const PRIMARY_LABEL_RATIO_IMBALANCED = 0.15;
@@ -172,6 +238,21 @@ function getBarElement(chart, datasetIndex, dataIndex) {
   return chart.getDatasetMeta(datasetIndex)?.data?.[dataIndex] ?? null;
 }
 
+function monthLabelBandHeight(compact) {
+  const fontSize = compact ? 10 : 11;
+  const tickPadding = compact ? 8 : 16;
+  return fontSize + tickPadding + BAR_LABEL_AXIS_CLEARANCE;
+}
+
+/** Garante rótulo de barra acima da faixa dos meses no eixo X. */
+function safeBarLabelOffset(chart, bar, compact, baseGap = BAR_ABOVE_MONTH_GAP) {
+  if (!chart?.chartArea || !bar) return baseGap;
+  const badgeH = labelBadgeHeight(compact);
+  const safeBottomY = chart.chartArea.bottom - monthLabelBandHeight(compact);
+  const needed = bar.y - safeBottomY + badgeH + 6;
+  return Math.max(baseGap, needed);
+}
+
 function barTooShortForInside(bar, compact) {
   return !bar?.height || bar.height < labelBadgeHeight(compact) + 8;
 }
@@ -209,7 +290,7 @@ function buildPrimaryBarDataLabels(panel, compact, formatter) {
       if (barsAreImbalanced(chart, idx)) {
         return compact ? "bottom" : "top";
       }
-      return "bottom";
+      return "top";
     },
     offset(ctx) {
       const chart = ctx.chart;
@@ -222,15 +303,15 @@ function buildPrimaryBarDataLabels(panel, compact, formatter) {
         return Math.max(bar.height * ratio, badgeH / 2 + 4);
       }
 
-      if (barTooShortForInside(bar, compact)) return 4;
-      return Math.max(bar.height * PRIMARY_LABEL_RATIO_BALANCED, 8);
+      if (barTooShortForInside(bar, compact)) {
+        return safeBarLabelOffset(chart, bar, compact);
+      }
+      return Math.max(bar.height * PRIMARY_LABEL_RATIO_BALANCED, BAR_ABOVE_MONTH_GAP);
     },
   };
 }
 
 function buildSecondaryBarDataLabels(panel, compact, formatter) {
-  const badgeH = labelBadgeHeight(compact);
-
   return {
     clip: false,
     ...dataLabelBadgeStyle(compact),
@@ -240,43 +321,13 @@ function buildSecondaryBarDataLabels(panel, compact, formatter) {
       if (!panelShowsLabels(panel)) return false;
       return ctx.dataset.data[ctx.dataIndex] != null;
     },
-    anchor(ctx) {
-      const bar = getBarElement(ctx.chart, ctx.datasetIndex, ctx.dataIndex);
-      if (!bar?.height) return "end";
-      if (barTooShortForInside(bar, compact)) return "end";
-      if (barsAreImbalanced(ctx.chart, ctx.dataIndex) && compact) return "end";
-      return "center";
-    },
-    align(ctx) {
-      const chart = ctx.chart;
-      const idx = ctx.dataIndex;
-      const bar = getBarElement(chart, ctx.datasetIndex, idx);
-      if (!bar?.height) return "top";
-
-      if (barTooShortForInside(bar, compact)) return "top";
-
-      if (barsAreImbalanced(chart, idx)) {
-        return compact ? "top" : "bottom";
-      }
-      return "top";
-    },
+    anchor: "end",
+    align: "top",
     offset(ctx) {
       const chart = ctx.chart;
-      const idx = ctx.dataIndex;
-      const bar = getBarElement(chart, ctx.datasetIndex, idx);
-      if (!bar?.height) return 4;
-
-      const imbalanced = barsAreImbalanced(chart, idx);
-
-      if (imbalanced && compact) {
-        return 4;
-      }
-      if (imbalanced && !compact) {
-        return Math.max(bar.height * 0.38, badgeH / 2 + 4);
-      }
-      if (barTooShortForInside(bar, compact)) return 4;
-
-      return Math.max(bar.height * BAR_ZONE_OFFSET_RATIO, 8);
+      const bar = getBarElement(chart, ctx.datasetIndex, ctx.dataIndex);
+      if (!bar?.height) return BAR_ABOVE_MONTH_GAP;
+      return safeBarLabelOffset(chart, bar, compact);
     },
   };
 }
@@ -357,6 +408,8 @@ function buildBarDatasets(panel, panelData, compact) {
 function buildComboConfig(panel, panelData, compact = false, indicatorId = "") {
   const { line, lineLabel } = panelData;
   const fontSize = compact ? 10 : 11;
+  const labelsOn = panelShowsLabels(panel);
+  const bottomPad = labelsOn ? (compact ? 42 : 52) : compact ? 12 : 24;
 
   const lineDataset = {
     type: "line",
@@ -385,7 +438,7 @@ function buildComboConfig(panel, panelData, compact = false, indicatorId = "") {
       animation: false,
       interaction: { mode: "index", intersect: false },
       layout: {
-        padding: { top: compact ? 48 : 52, right: 8, bottom: compact ? 4 : 8, left: 8 },
+        padding: { top: compact ? 48 : 52, right: 8, bottom: bottomPad, left: 8 },
       },
       datasets: {
         bar: {
@@ -428,7 +481,7 @@ function buildComboConfig(panel, panelData, compact = false, indicatorId = "") {
             font: { family: '"Vale Sans", sans-serif', size: fontSize },
             color: "#747678",
             maxRotation: 0,
-            padding: compact ? 4 : 10,
+            padding: compact ? 8 : 16,
           },
           grid: { display: false },
         },
@@ -471,6 +524,10 @@ function getPanelData(indicatorId, scope, gerenciaId) {
       ...indicator.consolidado,
       labels: window.VALE_INDICATORS.meta.meses,
     };
+  }
+
+  if (scope === "vp2-norte" || scope === "vp2-sul") {
+    return aggregateVp2Series(indicatorId, scope);
   }
 
   const gerencia = indicator.gerencias?.find((g) => g.id === gerenciaId);

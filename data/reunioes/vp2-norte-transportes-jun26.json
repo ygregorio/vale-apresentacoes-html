@@ -1,0 +1,85 @@
+{
+  "id": "vp2-norte-transportes-jun26",
+  "vp2": "vp2-norte",
+  "titulo": "DIR SERV. OP Norte — Reunião de Performance",
+  "referencia": "jun/26",
+  "dataReuniao": "15/07/2026",
+  "fonte": "Resumo_MCS_Transportes_DIR_Norte_15-07.docx",
+  "diretor": "Mario Jofre",
+  "gerenciasAnalisadas": ["Carajás", "São Luís e EFC", "Serra Sul (S11D)"],
+  "direcionamento": {
+    "responsavel": "Mario Jofre — DIR Norte",
+    "texto": "Não apresentar PTL e OVBK apenas como indicadores em vermelho ou verde. Mostrar o que o indicador revela sobre o processo: falta de previsibilidade, processos que não enxergam demanda futura, fatores externos e ações de estabilização.",
+    "narrativa": "Resultado do indicador → leitura de processo → causa raiz → ação de estabilização.",
+    "fraseGuia": "Os desvios devem ser apresentados como consequência de processos ainda em estabilização: roteirização, planejamento de demanda, integração RH/áreas operacionais, cadastro de passageiros e gestão de eventos pontuais."
+  },
+  "gerencias": [
+    {
+      "id": "carajas",
+      "nome": "GER Serra Norte (Carajás)",
+      "responsavel": "Rodolfo Lenza",
+      "narrativaExecutiva": "Capacidade do processo de antecipar interferências externas e variações de demanda. Solução: contingência operacional de rota + governança de demanda.",
+      "ovbk": {
+        "resultado": "OVBK pressionado por demanda acima do planejado.",
+        "motivo": "Persistência de ocupação acima da capacidade planejada em rotas específicas.",
+        "causa": "Falta de previsibilidade da demanda: entradas e movimentações sem acionamento prévio para dimensionar frota. Interferências externas (obras, pare e siga, congestionamentos).",
+        "solucao": "Integrar RH, áreas operacionais e Transportes; prazo mínimo para sinalização de novas entradas; contingenciamento de rotas; revisão dinâmica de horários; reforço de frota quando necessário."
+      },
+      "ptl": {
+        "resultado": "PTL impactado por atrasos recorrentes (95,7% em jun/26 — abaixo da meta).",
+        "motivo": "Pontualidade impactada por fatores externos recorrentes.",
+        "causa": "Dependência do ambiente externo: obras, pare e siga km 11, portaria Parauapebas, alertas vermelhos e necessidade de controle dinâmico de rotas.",
+        "solucao": "Ajuste de rotas e horários; antecipação seletiva de viagens críticas; monitoramento contínuo do efeito das obras; alinhamento pare e siga."
+      }
+    },
+    {
+      "id": "sls-efc",
+      "nome": "GER São Luís e EFC",
+      "responsavel": "Rafael Oliveira",
+      "narrativaExecutiva": "Transformar dados de atrasos e ocupação em ajustes preventivos de rota, nas rotas expostas ao trânsito metropolitano e picos de demanda.",
+      "ovbk": {
+        "resultado": "OVBK com oscilação de demanda (taxa 10.331 em jun/26 — acima da meta, 1 ocorrência).",
+        "motivo": "Oscilação de demanda por entrada e movimentação de colaboradores.",
+        "causa": "Planejamento não captura tempestivamente admissões, treinamentos presenciais ou deslocamentos extraordinários.",
+        "solucao": "Inserir Transportes no onboarding; comunicar admissões com antecedência; planejar rotas afetadas; reforço preventivo de frota."
+      },
+      "ptl": {
+        "resultado": "PTL impactado pelo trânsito metropolitano (94,63% em jun/26).",
+        "motivo": "Atrasos persistentes associados à mobilidade urbana e trânsito metropolitano.",
+        "causa": "Congestionamentos, obras (pare e siga Carajás), rotas TN-02/TN-13/TO-02/TO-10 com 34% dos atrasos do turno noite.",
+        "solucao": "Revisão de horários e rotas críticas; antecipações pontuais; nova distribuição de pontos de parada; monitoramento de embarque inicial."
+      }
+    },
+    {
+      "id": "serrasul",
+      "nome": "GER Serra Sul (S11D)",
+      "responsavel": "Vladimir Gomes",
+      "narrativaExecutiva": "Identificar onde falta previsibilidade: cadastro, aderência à rota, demanda por turno e efetividade da malha.",
+      "ovbk": {
+        "resultado": "OVBK com risco por uso não planejado (271 taxa jun/26; 212 excedentes, 20 dias de overbooking).",
+        "motivo": "Aumento de utilização não planejada e risco de lotação em linhas específicas.",
+        "causa": "Ausência ou fragilidade de cadastro/fidelização por linha; 190 novos cadastros e 453 avulsas aprovadas; migração entre regimes sem comunicação.",
+        "solucao": "Cadastro obrigatório e fidelização por linha; gestão de ocupação; mobilização de frota (micro-ônibus/ônibus); saneamento de base cadastral."
+      },
+      "ptl": {
+        "resultado": "PTL com oportunidade de estabilidade (sem arquivo MCS detalhado em jun/26).",
+        "motivo": "Pontualidade abaixo ou instável em parte das rotas.",
+        "causa": "Roteirização e diagnóstico por rota/turno ainda precisam ser fortalecidos; estratificar atrasos por linha, turno e localidade.",
+        "solucao": "Estratificação por linha/turno/localidade; otimização de rotas; roteirização inteligente; acompanhamento de rotas críticas."
+      }
+    }
+  ],
+  "falaSugerida": "A leitura dos indicadores de Transportes da DIR Norte deve seguir o direcionamento discutido na reunião de 15/07: o indicador é consequência do processo. Para PTL, os desvios devem ser analisados a partir das rotas e condições externas que geram atraso. Para OVBK, a causa central está na previsibilidade da demanda, especialmente na integração entre RH, áreas operacionais e Transportes. Fortalecer planejamento integrado, cadastro/fidelização e atuação preventiva nas rotas críticas.",
+  "ganhosEsperados": [
+    "Leitura executiva de processo, não apenas resultado numérico.",
+    "Clareza de responsabilidades entre Transportes, RH e áreas operacionais.",
+    "Previsibilidade de frota, ocupação e pontualidade por rota.",
+    "Gatilhos de antecipação de demanda e alteração de rota."
+  ],
+  "riscos": [
+    "Atrasos recorrentes por fatores externos sem contingência.",
+    "Sobrecarga por admissões/treinamentos sem comunicação prévia.",
+    "Dificuldade de defender indicador se causa raiz não ligada a processo.",
+    "Perda de confiança do usuário por atrasos, lotação e falta de previsibilidade."
+  ]
+}

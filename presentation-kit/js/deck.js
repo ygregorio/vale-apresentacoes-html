@@ -3,6 +3,8 @@ import { initCharts } from "./charts.js";
 import { initInteractions } from "./interactions.js";
 import { initMaps } from "./map-brazil.js";
 import { initIndicatorsTransport } from "./indicators-transport.js";
+import { initMcsSlides } from "./mcs-slide.js";
+import { initVp1IndicatorSlide } from "./vp1-indicator-slide.js";
 import { applyThemeAssets, applyIcons } from "./assets.js";
 
 export class Deck {
@@ -16,6 +18,7 @@ export class Deck {
     this.prevBtn = document.querySelector('[data-action="prev"]');
     this.nextBtn = document.querySelector('[data-action="next"]');
 
+    window.__valeDeck = this;
     this.bindEvents();
     this.goTo(0);
   }
@@ -50,10 +53,15 @@ export class Deck {
     }, { passive: true });
   }
 
+  goToSlideId(id) {
+    const idx = this.slides.findIndex((s) => s.dataset.slideId === id);
+    if (idx >= 0) this.goTo(idx);
+  }
+
   goTo(index) {
     if (index < 0 || index >= this.slides.length) return;
 
-    this.slides[this.current]?.classList.remove("is-active");
+    this.slides.forEach((s) => s.classList.remove("is-active"));
     this.current = index;
     const slide = this.slides[this.current];
     slide.classList.add("is-active");
@@ -86,6 +94,9 @@ export class Deck {
     initInteractions(slide);
     initMaps(slide);
     initIndicatorsTransport(slide);
+    if (slide.classList.contains("slide--vp1-indicator")) {
+      initVp1IndicatorSlide(slide);
+    }
   }
 
   next() {
@@ -109,5 +120,13 @@ document.addEventListener("DOMContentLoaded", () => {
     console.warn("Assets Vale: usando fallback CSS.", err);
   }
 
-  new Deck(viewport);
+  if (window.VALE_INDICATORS?.mcsSlides?.length && !viewport.querySelector("[data-mcs-slide]")) {
+    if (viewport.querySelector(".slide--mcs-test-intro")) {
+      initMcsSlides({ after: ".slide--mcs-test-intro" });
+    } else {
+      initMcsSlides();
+    }
+  }
+  const deck = new Deck(viewport);
+  window.__valeDeck = deck;
 });

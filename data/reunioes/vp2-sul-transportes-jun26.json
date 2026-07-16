@@ -1,0 +1,68 @@
+{
+  "id": "vp2-sul-transportes-jun26",
+  "vp2": "vp2-sul",
+  "titulo": "DIR SERV. OP Sul — Reunião de Performance",
+  "referencia": "jun/26",
+  "fonte": "Resumo — Indicadores de Transportes por Gerência (DIR SUL)",
+  "diretora": "Elida",
+  "gerencias": [
+    {
+      "id": "sul",
+      "nome": "GER Sul",
+      "responsavel": "Simone",
+      "ovbk": {
+        "resultado": "Meta atingida após inclusão de novas linhas e sinalização; casos pontuais permanecem, mas dentro da taxa.",
+        "motivo": "Lotação insuficiente.",
+        "causa": "Aumento de demanda, falta de linhas e sinalização.",
+        "solucao": "Novas linhas, adesivos de sinalização, monitoramento diário."
+      },
+      "ptl": {
+        "resultado": "Meta não atingida; atrasos recorrentes em rotas como Vargem Grande, Mutuca e Capão Xavier.",
+        "motivo": "Atrasos em rotas prioritárias.",
+        "causa": "Obras externas, congestionamentos, acidentes, vésperas de feriado, baldeio e atrasos de motoristas.",
+        "solucao": "Análise de rotas, ajuste de horários, antecipação de saída, uso de BI para identificar pontos críticos."
+      }
+    },
+    {
+      "id": "sudeste",
+      "nome": "GER Sudeste",
+      "responsavel": "Livia",
+      "ovbk": {
+        "resultado": "Problemas em Santa Bárbara para Fazendão; aumento de demanda; ônibus extra implementado.",
+        "motivo": "Lotação acima do previsto.",
+        "causa": "Crescimento inesperado de passageiros.",
+        "solucao": "Implementação de ônibus extra, acompanhamento da demanda."
+      },
+      "ptl": {
+        "resultado": "Atrasos em rotas, especialmente devido a obras e congestionamentos.",
+        "motivo": "Atrasos em linhas de mina.",
+        "causa": "Obras, congestionamentos, acidentes.",
+        "solucao": "Ajuste de rotas, inclusão de ônibus, análise de causas e priorização de rotas críticas."
+      }
+    },
+    {
+      "id": "tu-efvm",
+      "nome": "GER TU e EFVM",
+      "responsavel": "Domingos",
+      "ovbk": {
+        "resultado": "Meta atingida após inclusão de linhas e sinalização; casos pontuais controlados.",
+        "motivo": "Lotação insuficiente.",
+        "causa": "Falta de linhas, sinalização inadequada.",
+        "solucao": "Novas linhas, adesivos, monitoramento."
+      },
+      "ptl": {
+        "resultado": "Atrasos recorrentes, principalmente por fatores externos.",
+        "motivo": "Atrasos em rotas.",
+        "causa": "Obras, congestionamentos, acidentes, fatores internos.",
+        "solucao": "Ajuste de horários, análise de rotas, antecipação de saída, uso de BI."
+      }
+    }
+  ],
+  "direcionamento": {
+    "responsavel": "Elida — DIR SUL",
+    "texto": "Reforço da necessidade de abordagem sistêmica para pontualidade, análise detalhada das causas e ações específicas para cada rota, além de não normalizar atrasos.",
+    "motivo": "Indicadores de transporte impactando a operação.",
+    "causa": "Fatores externos e internos recorrentes.",
+    "solucao": "Revisão de rotas, priorização de ações, acompanhamento de indicadores, uso de BI e comunicação entre gerências."
+  }
+}
