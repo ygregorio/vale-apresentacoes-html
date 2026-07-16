@@ -37,6 +37,8 @@ async function loadChartPlugins() {
     Chart.register(window.ChartDataLabels);
   }
 
+  ensurePercentComboLabelsPlugin(Chart);
+
   pluginsLoaded = true;
   return Chart;
 }
@@ -276,25 +278,130 @@ function isPercentIndicator(indicatorId) {
 
 function percentLabelLayout(chart, compact) {
   const badgeH = labelBadgeHeight(compact);
-  const top = (chart.chartArea?.top ?? 0) + 6;
-  const lineTop = top;
-  const dimensionTop = lineTop + badgeH + 10;
-  return {
-    badgeH,
-    lineTop,
-    dimensionTop,
-  };
+  const lineTop = (chart.chartArea?.top ?? 0) + 4;
+  const dimensionPrimaryTop = lineTop + badgeH + 8;
+  const dimensionSecondaryTop = dimensionPrimaryTop + badgeH + 4;
+  return { badgeH, lineTop, dimensionPrimaryTop, dimensionSecondaryTop };
 }
 
-function percentBarLabelOffset(chart, dataIndex, compact) {
+function percentChartCountMax(panelData, compact) {
+  const { barPrimary, barSecondary } = panelData;
+  const dataMax = Math.max(...(barPrimary || []), ...(barSecondary || []), 0);
+  const badgeH = labelBadgeHeight(compact);
+  const labelBands = badgeH * 3 + 32;
+  const chartPlotHeight = compact ? 120 : 136;
+  const targetBarTop = labelBands + 10;
+  const usable = Math.max(chartPlotHeight - targetBarTop, chartPlotHeight * 0.34);
+  const scaleMax = dataMax * (chartPlotHeight / usable);
+  return Math.max(scaleMax, dataMax * 3.4);
+}
+
+function drawLabelBadge(ctx, text, centerX, topY, style, compact) {
+  const fontSize = dataLabelFontSize(compact);
+  const padX = 6;
+  const padY = 4;
+  ctx.save();
+  ctx.font = `700 ${fontSize}px "Vale Sans", sans-serif`;
+  const textW = ctx.measureText(text).width;
+  const w = textW + padX * 2;
+  const h = fontSize + padY * 2;
+  const x = centerX - w / 2;
+  ctx.fillStyle = style.backgroundColor;
+  ctx.beginPath();
+  if (typeof ctx.roundRect === "function") {
+    ctx.roundRect(x, topY, w, h, 4);
+  } else {
+    ctx.rect(x, topY, w, h);
+  }
+  ctx.fill();
+  ctx.fillStyle = style.color;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(text, centerX, topY + h / 2);
+  ctx.restore();
+  return h;
+}
+
+function drawPercentComboLabels(chart, opts) {
+  const { panel, compact, indicatorId, panelData } = opts;
+  if (!panelShowsLabels(panel) || !chart.chartArea) return;
+
   const layout = percentLabelLayout(chart, compact);
-  const tallestTop = tallestBarTopY(chart, dataIndex);
-  return Math.max(tallestTop - layout.dimensionTop - layout.badgeH, 4);
+  const dimStyle = dataLabelBadgeStyle(compact);
+  const lineFmt = lineValueFormatter(indicatorId, compact);
+  const ctx = chart.ctx;
+
+  const barMetas = chart.data.datasets
+    .map((dataset, index) => ({ dataset, index }))
+    .filter(({ dataset }) => dataset.type === "bar");
+  const lineMeta = chart.getDatasetMeta(
+    chart.data.datasets.findIndex((d) => d.type === "line"),
+  );
+
+  if (barMetas.length < 2 || !lineMeta?.data?.length) return;
+
+  const primaryMeta = chart.getDatasetMeta(barMetas[0].index);
+  const secondaryMeta = chart.getDatasetMeta(barMetas[1].index);
+
+  for (let i = 0; i < panelData.labels.length; i += 1) {
+    const linePoint = lineMeta.data[i];
+    const barPrimary = primaryMeta.data[i];
+    const barSecondary = secondaryMeta.data[i];
+    if (!linePoint || !barPrimary || !barSecondary) continue;
+
+    const lineValue = Number(panelData.line[i]);
+    const meets = lineLabelMeetsMeta(indicatorId, lineValue);
+    const lineStyle = {
+      color: meets ? META_LABEL_GOOD.color : META_LABEL_BAD.color,
+      backgroundColor: meets ? META_LABEL_GOOD.bg : META_LABEL_BAD.bg,
+    };
+
+    drawLabelBadge(ctx, lineFmt(lineValue), linePoint.x, layout.lineTop, lineStyle, compact);
+    drawLabelBadge(
+      ctx,
+      fmtNumber(Number(panelData.barPrimary[i])),
+      linePoint.x,
+      layout.dimensionPrimaryTop,
+      dimStyle,
+      compact,
+    );
+    drawLabelBadge(
+      ctx,
+      fmtNumber(Number(panelData.barSecondary[i])),
+      linePoint.x,
+      layout.dimensionSecondaryTop,
+      dimStyle,
+      compact,
+    );
+  }
+}
+
+const percentComboLabelsPlugin = {
+  id: "percentComboLabels",
+  afterDatasetsDraw(chart) {
+    const opts = chart.options.plugins?.percentComboLabels;
+    if (!opts?.indicatorId || !isPercentIndicator(opts.indicatorId)) return;
+    drawPercentComboLabels(chart, opts);
+  },
+};
+
+let percentComboLabelsRegistered = false;
+
+function ensurePercentComboLabelsPlugin(Chart) {
+  if (percentComboLabelsRegistered) return;
+  Chart.register(percentComboLabelsPlugin);
+  percentComboLabelsRegistered = true;
+}
+
+function hiddenPercentDataLabels() {
+  return { display: false };
 }
 
 function buildPrimaryBarDataLabels(panel, compact, formatter, indicatorId) {
   const badgeH = labelBadgeHeight(compact);
   const percentMode = isPercentIndicator(indicatorId);
+
+  if (percentMode) return hiddenPercentDataLabels();
 
   return {
     clip: false,
@@ -360,6 +467,8 @@ function buildPrimaryBarDataLabels(panel, compact, formatter, indicatorId) {
 function buildSecondaryBarDataLabels(panel, compact, formatter, indicatorId) {
   const percentMode = isPercentIndicator(indicatorId);
 
+  if (percentMode) return hiddenPercentDataLabels();
+
   return {
     clip: false,
     ...dataLabelBadgeStyle(compact),
@@ -413,6 +522,8 @@ function buildLineDataLabels(panel, panelData, compact, indicatorId) {
   const badgeH = labelBadgeHeight(compact);
   const lineClearance = percentMode ? badgeH + 14 : LINE_ABOVE_BAR_GAP;
 
+  if (percentMode) return hiddenPercentDataLabels();
+
   return {
     anchor: "end",
     align: "top",
@@ -435,11 +546,6 @@ function buildLineDataLabels(panel, panelData, compact, indicatorId) {
       const idx = ctx.dataIndex;
       const linePointY = chart.scales.yRate.getPixelForValue(Number(ctx.dataset.data[idx]));
 
-      if (percentMode) {
-        const layout = percentLabelLayout(chart, compact);
-        return linePointY - layout.lineTop - badgeH;
-      }
-
       const bandTopY = barLabelsBandTopY(chart, idx, compact);
       const targetTopY = bandTopY - lineClearance - badgeH;
       const chartTop = chart.chartArea?.top ?? 0;
@@ -447,16 +553,6 @@ function buildLineDataLabels(panel, panelData, compact, indicatorId) {
       return Math.max(linePointY - safeTopY - badgeH, 8);
     },
   };
-}
-
-function percentChartCountMax(panelData) {
-  const { barPrimary, barSecondary } = panelData;
-  const dataMax = Math.max(
-    ...(barPrimary || []),
-    ...(barSecondary || []),
-    0,
-  );
-  return dataMax * 2.5;
 }
 
 function buildBarDatasets(panel, panelData, compact, indicatorId) {
@@ -506,8 +602,8 @@ function buildComboConfig(panel, panelData, compact = false, indicatorId = "") {
   const topPad = labelsOn
     ? percentMode
       ? compact
-        ? 64
-        : 72
+        ? 72
+        : 80
       : compact
         ? 48
         : 52
@@ -566,6 +662,9 @@ function buildComboConfig(panel, panelData, compact = false, indicatorId = "") {
         datalabels: {
           clip: false,
         },
+        percentComboLabels: percentMode && labelsOn
+          ? { panel, compact, indicatorId, panelData }
+          : false,
         tooltip: {
           callbacks: {
             label(ctx) {
@@ -593,7 +692,7 @@ function buildComboConfig(panel, panelData, compact = false, indicatorId = "") {
           type: "linear",
           position: "left",
           beginAtZero: true,
-          max: percentMode && labelsOn ? percentChartCountMax(panelData) : undefined,
+          max: percentMode && labelsOn ? percentChartCountMax(panelData, compact) : undefined,
           ticks: { display: false },
           grid: { display: false },
           border: { display: false },
