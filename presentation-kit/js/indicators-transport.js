@@ -276,18 +276,20 @@ function isPercentIndicator(indicatorId) {
 
 function percentLabelLayout(chart, compact) {
   const badgeH = labelBadgeHeight(compact);
-  const top = (chart.chartArea?.top ?? 0) + 4;
+  const top = (chart.chartArea?.top ?? 0) + 6;
+  const lineTop = top;
+  const dimensionTop = lineTop + badgeH + 10;
   return {
     badgeH,
-    lineTop: top,
-    dimensionTop: top + badgeH + 6,
+    lineTop,
+    dimensionTop,
   };
 }
 
 function percentBarLabelOffset(chart, dataIndex, compact) {
   const layout = percentLabelLayout(chart, compact);
   const tallestTop = tallestBarTopY(chart, dataIndex);
-  return Math.max(tallestTop - layout.dimensionTop, 4);
+  return Math.max(tallestTop - layout.dimensionTop - layout.badgeH, 4);
 }
 
 function buildPrimaryBarDataLabels(panel, compact, formatter, indicatorId) {
@@ -454,7 +456,7 @@ function percentChartCountMax(panelData) {
     ...(barSecondary || []),
     0,
   );
-  return dataMax * 2.25;
+  return dataMax * 2.5;
 }
 
 function buildBarDatasets(panel, panelData, compact, indicatorId) {
