@@ -278,22 +278,23 @@ function isPercentIndicator(indicatorId) {
 
 function percentLabelLayout(chart, compact) {
   const badgeH = labelBadgeHeight(compact);
-  const lineTop = (chart.chartArea?.top ?? 0) + 4;
-  const dimensionPrimaryTop = lineTop + badgeH + 8;
-  const dimensionSecondaryTop = dimensionPrimaryTop + badgeH + 4;
+  const plotTop = chart.chartArea?.top ?? 0;
+  const gapBeforePlot = 8;
+  const dimensionSecondaryTop = plotTop - gapBeforePlot - badgeH;
+  const dimensionPrimaryTop = dimensionSecondaryTop - badgeH - 4;
+  const lineTop = dimensionPrimaryTop - badgeH - 8;
   return { badgeH, lineTop, dimensionPrimaryTop, dimensionSecondaryTop };
 }
 
-function percentChartCountMax(panelData, compact) {
+function percentTopPadding(compact) {
+  const badgeH = labelBadgeHeight(compact);
+  return badgeH * 3 + 28;
+}
+
+function percentChartCountMax(panelData) {
   const { barPrimary, barSecondary } = panelData;
   const dataMax = Math.max(...(barPrimary || []), ...(barSecondary || []), 0);
-  const badgeH = labelBadgeHeight(compact);
-  const labelBands = badgeH * 3 + 32;
-  const chartPlotHeight = compact ? 120 : 136;
-  const targetBarTop = labelBands + 10;
-  const usable = Math.max(chartPlotHeight - targetBarTop, chartPlotHeight * 0.34);
-  const scaleMax = dataMax * (chartPlotHeight / usable);
-  return Math.max(scaleMax, dataMax * 3.4);
+  return dataMax * 1.1;
 }
 
 function drawLabelBadge(ctx, text, centerX, topY, style, compact) {
@@ -601,9 +602,7 @@ function buildComboConfig(panel, panelData, compact = false, indicatorId = "") {
   const bottomPad = labelsOn ? (compact ? 42 : 52) : compact ? 12 : 24;
   const topPad = labelsOn
     ? percentMode
-      ? compact
-        ? 72
-        : 80
+      ? percentTopPadding(compact)
       : compact
         ? 48
         : 52
@@ -692,7 +691,7 @@ function buildComboConfig(panel, panelData, compact = false, indicatorId = "") {
           type: "linear",
           position: "left",
           beginAtZero: true,
-          max: percentMode && labelsOn ? percentChartCountMax(panelData, compact) : undefined,
+          max: percentMode && labelsOn ? percentChartCountMax(panelData) : undefined,
           ticks: { display: false },
           grid: { display: false },
           border: { display: false },
