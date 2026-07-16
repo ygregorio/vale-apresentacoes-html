@@ -274,8 +274,25 @@ function isPercentIndicator(indicatorId) {
   return getIndicatorMeta(indicatorId)?.format === "percent";
 }
 
+function percentLabelLayout(chart, compact) {
+  const badgeH = labelBadgeHeight(compact);
+  const top = (chart.chartArea?.top ?? 0) + 4;
+  return {
+    badgeH,
+    lineTop: top,
+    dimensionTop: top + badgeH + 6,
+  };
+}
+
+function percentBarLabelOffset(chart, dataIndex, compact) {
+  const layout = percentLabelLayout(chart, compact);
+  const tallestTop = tallestBarTopY(chart, dataIndex);
+  return Math.max(tallestTop - layout.dimensionTop, 4);
+}
+
 function buildPrimaryBarDataLabels(panel, compact, formatter, indicatorId) {
   const badgeH = labelBadgeHeight(compact);
+  const percentMode = isPercentIndicator(indicatorId);
 
   return {
     clip: false,
@@ -290,6 +307,7 @@ function buildPrimaryBarDataLabels(panel, compact, formatter, indicatorId) {
       const chart = ctx.chart;
       const idx = ctx.dataIndex;
       const bar = getBarElement(chart, ctx.datasetIndex, idx);
+      if (percentMode) return "end";
       if (barTooShortForInside(bar, compact)) return "end";
       if (!barsAreImbalanced(chart, idx)) return "end";
       return "center";
@@ -298,6 +316,7 @@ function buildPrimaryBarDataLabels(panel, compact, formatter, indicatorId) {
       const chart = ctx.chart;
       const idx = ctx.dataIndex;
       const bar = getBarElement(chart, ctx.datasetIndex, idx);
+      if (percentMode) return "top";
       if (barTooShortForInside(bar, compact)) return "top";
 
       if (!barsAreImbalanced(chart, idx)) {
@@ -314,6 +333,10 @@ function buildPrimaryBarDataLabels(panel, compact, formatter, indicatorId) {
       const idx = ctx.dataIndex;
       const bar = getBarElement(chart, ctx.datasetIndex, idx);
       if (!bar?.height) return 4;
+
+      if (percentMode) {
+        return percentBarLabelOffset(chart, idx, compact);
+      }
 
       if (!barsAreImbalanced(chart, idx)) {
         return safeBarLabelOffset(chart, bar, compact, BAR_ABOVE_MONTH_GAP + 2);
@@ -333,6 +356,8 @@ function buildPrimaryBarDataLabels(panel, compact, formatter, indicatorId) {
 }
 
 function buildSecondaryBarDataLabels(panel, compact, formatter, indicatorId) {
+  const percentMode = isPercentIndicator(indicatorId);
+
   return {
     clip: false,
     ...dataLabelBadgeStyle(compact),
@@ -343,6 +368,7 @@ function buildSecondaryBarDataLabels(panel, compact, formatter, indicatorId) {
       return ctx.dataset.data[ctx.dataIndex] != null;
     },
     anchor(ctx) {
+      if (percentMode) return "end";
       const chart = ctx.chart;
       const idx = ctx.dataIndex;
       if (!barsAreImbalanced(chart, idx)) {
@@ -351,6 +377,7 @@ function buildSecondaryBarDataLabels(panel, compact, formatter, indicatorId) {
       return "end";
     },
     align(ctx) {
+      if (percentMode) return "top";
       const chart = ctx.chart;
       const idx = ctx.dataIndex;
       if (!barsAreImbalanced(chart, idx)) {
@@ -363,6 +390,10 @@ function buildSecondaryBarDataLabels(panel, compact, formatter, indicatorId) {
       const idx = ctx.dataIndex;
       const bar = getBarElement(chart, ctx.datasetIndex, idx);
       if (!bar?.height) return BAR_ABOVE_MONTH_GAP;
+
+      if (percentMode) {
+        return percentBarLabelOffset(chart, idx, compact);
+      }
 
       if (!barsAreImbalanced(chart, idx)) {
         return 0;
@@ -401,18 +432,29 @@ function buildLineDataLabels(panel, panelData, compact, indicatorId) {
       const chart = ctx.chart;
       const idx = ctx.dataIndex;
       const linePointY = chart.scales.yRate.getPixelForValue(Number(ctx.dataset.data[idx]));
+
+      if (percentMode) {
+        const layout = percentLabelLayout(chart, compact);
+        return linePointY - layout.lineTop - badgeH;
+      }
+
       const bandTopY = barLabelsBandTopY(chart, idx, compact);
       const targetTopY = bandTopY - lineClearance - badgeH;
       const chartTop = chart.chartArea?.top ?? 0;
       const safeTopY = Math.max(targetTopY, chartTop + 4);
-
-      if (percentMode) {
-        return Math.max(linePointY - safeTopY - badgeH, badgeH + 6);
-      }
-
       return Math.max(linePointY - safeTopY - badgeH, 8);
     },
   };
+}
+
+function percentChartCountMax(panelData) {
+  const { barPrimary, barSecondary } = panelData;
+  const dataMax = Math.max(
+    ...(barPrimary || []),
+    ...(barSecondary || []),
+    0,
+  );
+  return dataMax * 2.25;
 }
 
 function buildBarDatasets(panel, panelData, compact, indicatorId) {
@@ -462,8 +504,8 @@ function buildComboConfig(panel, panelData, compact = false, indicatorId = "") {
   const topPad = labelsOn
     ? percentMode
       ? compact
-        ? 58
-        : 68
+        ? 64
+        : 72
       : compact
         ? 48
         : 52
@@ -549,6 +591,7 @@ function buildComboConfig(panel, panelData, compact = false, indicatorId = "") {
           type: "linear",
           position: "left",
           beginAtZero: true,
+          max: percentMode && labelsOn ? percentChartCountMax(panelData) : undefined,
           ticks: { display: false },
           grid: { display: false },
           border: { display: false },

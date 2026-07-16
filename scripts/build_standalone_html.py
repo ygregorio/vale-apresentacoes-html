@@ -29,6 +29,7 @@ FONT_FILES = [
 ]
 
 LOGO = KIT / "assets/logo/vale-logo-white.png"
+MAP_SVG = KIT / "assets/map-brazil.svg"
 
 
 def read_text(path: Path) -> str:
@@ -71,6 +72,55 @@ def strip_esm_module(source: str) -> str:
     return "\n".join(lines)
 
 
+MODULE_EXPORTS: dict[str, list[str]] = {
+    "animations.js": ["initAnimations", "initCoverAnimation"],
+    "charts.js": ["initCharts"],
+    "interactions.js": ["initInteractions"],
+    "map-brazil.js": ["initMaps"],
+    "indicators-transport.js": ["initIndicatorsTransport"],
+    "mcs-slide.js": [
+        "renderMcsVp1Panel",
+        "renderPorques",
+        "injectMcsSlides",
+        "initMcsSlides",
+    ],
+    "vp1-indicator-slide.js": ["initVp1IndicatorSlide"],
+    "assets.js": [
+        "paths",
+        "resolveLogoVariant",
+        "logoPathForSlide",
+        "applyLogos",
+        "iconPath",
+        "brandPath",
+        "illustrationPath",
+        "redeGrid",
+        "applyThemeAssets",
+        "applyIcons",
+    ],
+    "deck.js": ["Deck"],
+}
+
+
+def patch_standalone_js(name: str, source: str) -> str:
+    if name == "map-brazil.js" and MAP_SVG.exists():
+        b64 = base64.b64encode(MAP_SVG.read_bytes()).decode("ascii")
+        source = source.replace(
+            'const MAP_SVG_URL = new URL("../assets/map-brazil.svg", import.meta.url);',
+            f'const MAP_SVG_URL = "data:image/svg+xml;base64,{b64}";',
+        )
+    return source
+
+
+def wrap_standalone_module(name: str, source: str) -> str:
+    source = patch_standalone_js(name, source)
+    if name == "vp1-indicator-slide.js":
+        source = source.replace("renderMcsVp1Panel(", "window.renderMcsVp1Panel(")
+
+    exports = MODULE_EXPORTS.get(name, [])
+    export_lines = "\n".join(f"  window.{symbol} = {symbol};" for symbol in exports)
+    return f"(function() {{\n{source}\n{export_lines}\n}})();"
+
+
 def build_js_bundle() -> str:
     order = [
         KIT / "js/animations.js",
@@ -86,7 +136,8 @@ def build_js_bundle() -> str:
     parts = ['"use strict";']
     for path in order:
         parts.append(f"/* --- {path.name} --- */")
-        parts.append(strip_esm_module(read_text(path)))
+        source = strip_esm_module(read_text(path))
+        parts.append(wrap_standalone_module(path.name, source))
     return "\n".join(parts)
 
 
