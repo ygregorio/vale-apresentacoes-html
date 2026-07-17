@@ -1,0 +1,5 @@
+Usuário: admin
+Senha padrão (desenvolvimento): Vale@2026
+
+Usada na primeira subida do servidor local (scripts/serve.ps1).
+Altere após o login em produção ou ambientes compartilhados.
